@@ -1,0 +1,378 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── ENUMS ───────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EMPLOYEE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+}
+
+enum SubscriptionPlan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum ProductStatus {
+  ACTIVE
+  DRAFT
+  ARCHIVED
+}
+
+enum CartMode {
+  WHATSAPP
+  QR_PAYMENT
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PAID
+  SHIPPED
+  COMPLETED
+  CANCELED
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+// ─── TENANTS ─────────────────────────────────────────────────────────────────
+
+model Tenant {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  email           String   @unique
+  phone           String?
+  logoUrl         String?
+  logoPublicId    String?
+
+  facebookPageUrl String?
+  whatsappNumber  String?
+  whatsappMessage String?
+
+  address         String?
+  website         String?
+  description     String?
+
+  cartMode            CartMode @default(WHATSAPP)
+  paymentQrUrl        String?
+  paymentQrPublicId   String?
+  paymentInstructions String?
+
+  // Personalización del catálogo
+  primaryColor        String   @default("#059669")
+  secondaryColor      String   @default("#0f172a")
+
+  stripeCustomerId String? @unique
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users        User[]
+  products     Product[]
+  categories   Category[]
+  subscription Subscription?
+  orders       Order[]
+
+  @@index([slug])
+  @@index([stripeCustomerId])
+}
+
+// ─── USERS ───────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole @default(EMPLOYEE)
+  avatarUrl    String?
+
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  refreshTokens RefreshToken[]
+
+  @@index([tenantId])
+  @@index([email])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+// ─── SUBSCRIPTIONS ────────────────────────────────────────────────────────────
+
+model Subscription {
+  id       String @id @default(cuid())
+  tenantId String @unique
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  stripeSubscriptionId String? @unique
+  stripePriceId        String?
+
+  plan   SubscriptionPlan   @default(FREE)
+  status SubscriptionStatus @default(TRIALING)
+
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean   @default(false)
+  trialEnd           DateTime?
+
+  maxProducts  Int @default(10)
+  maxEmployees Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stripeSubscriptionId])
+}
+
+// ─── CATEGORIES ───────────────────────────────────────────────────────────────
+
+model Category {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  imageUrl    String?
+  sortOrder   Int     @default(0)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  products Product[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([slug, tenantId])
+  @@index([tenantId])
+}
+
+// ─── PRODUCTS ─────────────────────────────────────────────────────────────────
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String
+  description String?
+  price       Decimal       @db.Decimal(10, 2)
+  comparePrice Decimal?     @db.Decimal(10, 2)
+  currency    String        @default("BOB")
+  status      ProductStatus @default(DRAFT)
+  isFeatured  Boolean       @default(false)
+
+  whatsappNumber  String?
+  whatsappMessage String?
+  facebookUrl     String?
+
+  metaTitle       String?
+  metaDescription String?
+  sortOrder       Int     @default(0)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  images     ProductImage[]
+  specs      ProductSpec[]
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([slug, tenantId])
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@index([tenantId, categoryId])
+  @@index([tenantId, isFeatured])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String
+  publicId  String?
+  altText   String?
+  sortOrder Int     @default(0)
+  isPrimary Boolean @default(false)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model ProductSpec {
+  id        String @id @default(cuid())
+  key       String
+  value     String
+  sortOrder Int    @default(0)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+// ─── CART ─────────────────────────────────────────────────────────────────────
+
+model Cart {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  tenantId  String
+  expiresAt DateTime
+
+  items CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sessionId])
+  @@index([tenantId])
+}
+
+model CartItem {
+  id            String  @id @default(cuid())
+  quantity      Int     @default(1)
+  priceSnapshot Decimal @db.Decimal(10, 2)
+
+  cartId String
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+  @@index([cartId])
+}
+
+// ─── ORDERS ───────────────────────────────────────────────────────────────────
+
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber String      @unique
+  status      OrderStatus @default(PENDING)
+
+  customerName  String?
+  customerPhone String?
+  customerEmail String?
+  notes         String?
+
+  subtotal Decimal @db.Decimal(10, 2)
+  total    Decimal @db.Decimal(10, 2)
+  currency String  @default("BOB")
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  items   OrderItem[]
+  payment Payment?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@index([orderNumber])
+}
+
+model OrderItem {
+  id           String  @id @default(cuid())
+  quantity     Int
+  unitPrice    Decimal @db.Decimal(10, 2)
+  total        Decimal @db.Decimal(10, 2)
+  productName  String
+  productSpecs Json?
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+}
+
+// ─── PAYMENTS (QR Bolivia) ───────────────────────────────────────────────────
+
+model Payment {
+  id       String        @id @default(cuid())
+  status   PaymentStatus @default(PENDING)
+  amount   Decimal       @db.Decimal(10, 2)
+  currency String        @default("BOB")
+
+  proofUrl      String?
+  proofPublicId String?
+  confirmedAt   DateTime?
+  rejectedAt    DateTime?
+  rejectionNote String?
+
+  orderId String  @unique
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([status])
+}
+
+// ─── PLAN CONFIG ──────────────────────────────────────────────────────────────
+
+model PlanConfig {
+  id            String           @id @default(cuid())
+  plan          SubscriptionPlan @unique
+  maxProducts   Int
+  maxEmployees  Int
+  maxImages     Int
+  stripePriceId String?
+  monthlyPrice  Decimal          @db.Decimal(10, 2)
+  features      Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
