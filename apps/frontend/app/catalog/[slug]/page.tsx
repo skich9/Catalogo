@@ -18,6 +18,7 @@ export default function CatalogPage() {
     loading, cartNotif,
     selectedProduct, openProduct, closeProduct,
     handleAddToCart, buildWaLink,
+    fontFamily,
   } = useCatalog(slug);
 
   const primaryColor   = catalog?.primaryColor   || '#059669';
@@ -35,7 +36,7 @@ export default function CatalogPage() {
   }
 
   return (
-    <div style={{ background: dark ? '#0f172a' : '#f1f5f9', minHeight: '100vh' }}>
+    <div style={{ background: dark ? '#0f172a' : '#f1f5f9', minHeight: '100vh', fontFamily }}>
 
       {/* Navbar */}
       <nav className="navbar navbar-dark sticky-top" style={{

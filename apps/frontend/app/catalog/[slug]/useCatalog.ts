@@ -4,6 +4,27 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { useCartStore } from '@/store/cartStore';
 
+const FONT_URLS: Record<string, string> = {
+  inter:       'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap',
+  poppins:     'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap',
+  montserrat:  'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap',
+  nunito:      'https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap',
+  playfair:    'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&display=swap',
+  roboto:      'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap',
+  lato:        'https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap',
+};
+
+const FONT_FAMILIES: Record<string, string> = {
+  default:     'system-ui, sans-serif',
+  inter:       "'Inter', sans-serif",
+  poppins:     "'Poppins', sans-serif",
+  montserrat:  "'Montserrat', sans-serif",
+  nunito:      "'Nunito', sans-serif",
+  playfair:    "'Playfair Display', serif",
+  roboto:      "'Roboto', sans-serif",
+  lato:        "'Lato', sans-serif",
+};
+
 export interface CatalogImage {
   id?: string;
   url: string;
@@ -38,9 +59,12 @@ export interface CatalogInfo {
   facebookPageUrl?: string;
   whatsappNumber?: string;
   whatsappMessage?: string;
+  instagramUrl?: string;
+  tiktokUrl?: string;
   cartMode: 'WHATSAPP' | 'QR_PAYMENT';
   primaryColor?: string;
   secondaryColor?: string;
+  fontFamily?: string;
   categories: { id: string; name: string; slug: string }[];
 }
 
@@ -54,10 +78,24 @@ export function useCatalog(slug: string) {
   const [selectedProduct, setSelectedProduct] = useState<CatalogProduct | null>(null);
   const { addItem, items } = useCartStore();
 
-  // Cargar info del catálogo
+  // Cargar info del catálogo + inyectar fuente
   useEffect(() => {
     api.get(`/public/catalog/${slug}`)
-      .then((r) => setCatalog(r.data))
+      .then((r) => {
+        const data = r.data;
+        setCatalog(data);
+        // Inyectar la fuente elegida por el negocio
+        const fontId = data.fontFamily || 'default';
+        if (fontId !== 'default' && FONT_URLS[fontId]) {
+          const url = FONT_URLS[fontId];
+          if (!document.querySelector(`link[href="${url}"]`)) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = url;
+            document.head.appendChild(link);
+          }
+        }
+      })
       .catch(() => setCatalog(null));
   }, [slug]);
 
@@ -94,6 +132,8 @@ export function useCatalog(slug: string) {
   const openProduct  = (product: CatalogProduct) => setSelectedProduct(product);
   const closeProduct = () => setSelectedProduct(null);
 
+  const fontFamily = FONT_FAMILIES[catalog?.fontFamily || 'default'] || 'system-ui, sans-serif';
+
   return {
     catalog, products,
     search, setSearch,
@@ -101,5 +141,6 @@ export function useCatalog(slug: string) {
     loading, cartNotif, items,
     selectedProduct, openProduct, closeProduct,
     handleAddToCart, buildWaLink,
+    fontFamily,
   };
 }

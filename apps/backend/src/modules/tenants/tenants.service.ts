@@ -14,8 +14,9 @@ export class TenantsService {
         phone: true, logoUrl: true, description: true,
         address: true, website: true,
         facebookPageUrl: true, whatsappNumber: true, whatsappMessage: true,
+        instagramUrl: true, tiktokUrl: true,
         cartMode: true, paymentInstructions: true, paymentQrUrl: true,
-        primaryColor: true, secondaryColor: true,
+        primaryColor: true, secondaryColor: true, fontFamily: true,
         subscription: { select: { plan: true, status: true, maxProducts: true, maxEmployees: true } },
       },
     });

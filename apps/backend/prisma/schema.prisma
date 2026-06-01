@@ -82,6 +82,11 @@ model Tenant {
   // Personalización del catálogo
   primaryColor        String   @default("#059669")
   secondaryColor      String   @default("#0f172a")
+  fontFamily          String   @default("default")
+
+  // Redes sociales adicionales
+  instagramUrl        String?
+  tiktokUrl           String?
 
   stripeCustomerId String? @unique
 

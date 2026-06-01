@@ -13,7 +13,8 @@ export class PublicService {
         description: true, facebookPageUrl: true, whatsappNumber: true,
         whatsappMessage: true, cartMode: true, paymentQrUrl: true,
         paymentInstructions: true, address: true, website: true,
-        primaryColor: true, secondaryColor: true,
+        primaryColor: true, secondaryColor: true, fontFamily: true,
+        instagramUrl: true, tiktokUrl: true,
         categories: {
           orderBy: { sortOrder: 'asc' },
           select: { id: true, name: true, slug: true, imageUrl: true },

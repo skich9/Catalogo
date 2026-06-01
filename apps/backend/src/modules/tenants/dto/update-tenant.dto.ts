@@ -8,10 +8,14 @@ export class UpdateTenantDto {
   @ApiPropertyOptional() @IsString() @IsOptional() phone?: string;
   @ApiPropertyOptional() @IsString() @IsOptional() address?: string;
   @ApiPropertyOptional() @IsString() @IsOptional() website?: string;
+  @ApiPropertyOptional() @IsString() @IsOptional() logoUrl?: string;
+  @ApiPropertyOptional() @IsString() @IsOptional() logoPublicId?: string;
 
   @ApiPropertyOptional() @IsString() @IsOptional() whatsappNumber?: string;
   @ApiPropertyOptional() @IsString() @IsOptional() whatsappMessage?: string;
   @ApiPropertyOptional() @IsString() @IsOptional() facebookPageUrl?: string;
+  @ApiPropertyOptional() @IsString() @IsOptional() instagramUrl?: string;
+  @ApiPropertyOptional() @IsString() @IsOptional() tiktokUrl?: string;
 
   @ApiPropertyOptional({ enum: CartMode }) @IsEnum(CartMode) @IsOptional() cartMode?: CartMode;
   @ApiPropertyOptional() @IsString() @IsOptional() paymentInstructions?: string;
@@ -25,4 +29,8 @@ export class UpdateTenantDto {
   @IsString() @IsOptional()
   @Matches(/^#([0-9A-Fa-f]{6})$/, { message: 'secondaryColor debe ser un color hex válido' })
   secondaryColor?: string;
+
+  @ApiPropertyOptional({ example: 'poppins' })
+  @IsString() @IsOptional()
+  fontFamily?: string;
 }
