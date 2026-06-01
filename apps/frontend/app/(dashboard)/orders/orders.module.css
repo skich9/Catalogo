@@ -1,0 +1,248 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title { font-weight: 800; color: #1e293b; font-size: 1.4rem; margin: 0; }
+
+/* ─── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: #e2e8f0;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.tab {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { color: #1e293b; }
+.tabActive  { background: #ffffff; color: #059669; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+/* ─── Summary cards ───────────────────────────────────────────────────────── */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.75rem;
+}
+
+.summaryCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.summaryValue { font-weight: 800; color: #1e293b; font-size: 1.7rem; line-height: 1; margin-bottom: 4px; }
+.summaryLabel { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.summaryIcon  { font-size: 1.4rem; margin-bottom: 0.4rem; display: block; }
+
+/* ─── Filtro días ─────────────────────────────────────────────────────────── */
+.dayFilter {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.dayLabel { font-size: 0.8rem; color: #64748b; font-weight: 600; margin-right: 0.2rem; }
+.dayBtn {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dayBtn:hover { border-color: #059669; color: #059669; }
+.dayBtnActive { border-color: #059669; background: #ecfdf5; color: #059669; }
+
+/* ─── Sección de ranking ──────────────────────────────────────────────────── */
+.rankingSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+@media (max-width: 700px) { .rankingSection { grid-template-columns: 1fr; } }
+
+.rankCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.rankCardHeader {
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rankHeaderBest { background: linear-gradient(90deg, #064e3b, #059669); }
+.rankHeaderWorst { background: linear-gradient(90deg, #1e293b, #334155); }
+
+.rankHeaderTitle { color: #f1f5f9; font-weight: 700; font-size: 0.9rem; margin: 0; }
+
+.rankList { padding: 0.5rem; }
+
+.rankItem {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  transition: background 0.12s;
+}
+.rankItem:hover { background: #f8fafc; }
+
+.rankPos {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+.rankPosBest  { background: #d1fae5; color: #059669; }
+.rankPosWorst { background: #f1f5f9; color: #94a3b8; }
+
+.rankImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+
+.rankImgPlaceholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.rankInfo { flex: 1; min-width: 0; }
+
+.rankName {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+
+.rankBarWrap { background: #f1f5f9; border-radius: 999px; height: 5px; margin-bottom: 2px; }
+.rankBarFill { height: 5px; border-radius: 999px; transition: width 0.6s ease; }
+
+.rankClicks  { font-size: 0.7rem; color: #94a3b8; }
+.rankClicksNum { color: #059669; font-weight: 700; }
+
+/* ─── Tabla de pedidos ────────────────────────────────────────────────────── */
+.ordersTable {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.tableHeader {
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tableTitle { color: #f1f5f9; font-weight: 700; font-size: 0.9rem; margin: 0; }
+
+.orderRow {
+  display: grid;
+  grid-template-columns: 130px 1fr 100px 110px 90px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.83rem;
+  transition: background 0.12s;
+}
+.orderRow:last-child { border-bottom: none; }
+.orderRow:hover { background: #f8fafc; }
+
+.orderHeaderRow {
+  background: #f8fafc;
+  font-weight: 700;
+  font-size: 0.73rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.orderNum { font-weight: 700; color: #059669; font-family: monospace; }
+.orderCustomer { color: #334155; }
+.orderAmount { font-weight: 700; color: #1e293b; }
+
+.statusBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.statusPending   { background: #fef9c3; color: #a16207; }
+.statusConfirmed { background: #dbeafe; color: #1d4ed8; }
+.statusPaid      { background: #d1fae5; color: #059669; }
+.statusCanceled  { background: #fee2e2; color: #dc2626; }
+.statusShipped   { background: #e0e7ff; color: #4338ca; }
+
+.emptyOrders {
+  text-align: center;
+  padding: 3rem;
+  color: #94a3b8;
+}
+
+.noDataCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 3rem;
+  text-align: center;
+  color: #94a3b8;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+.noDataIcon { font-size: 3rem; display: block; margin-bottom: 0.75rem; }

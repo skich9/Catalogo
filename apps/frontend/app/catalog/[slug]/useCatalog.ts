@@ -62,11 +62,15 @@ export function useCatalog(slug: string) {
   const handleAddToCart = async (product: CatalogProduct) => {
     if (!catalog) return;
     await addItem(catalog.id, product.id);
+    api.post('/analytics/click', { tenantId: catalog.id, productId: product.id, type: 'cart' }).catch(() => {});
     setCartNotif(`✓ ${product.name} agregado al carrito`);
     setTimeout(() => setCartNotif(''), 2500);
   };
 
-  const buildWaLink = (phone: string, msg?: string) => {
+  const buildWaLink = (phone: string, msg?: string, productId?: string) => {
+    if (catalog?.id && productId) {
+      api.post('/analytics/click', { tenantId: catalog.id, productId, type: 'whatsapp' }).catch(() => {});
+    }
     const clean = phone.replace(/\D/g, '');
     return msg ? `https://wa.me/${clean}?text=${encodeURIComponent(msg)}` : `https://wa.me/${clean}`;
   };

@@ -170,6 +170,7 @@ export default function CatalogPage() {
                                 product.whatsappNumber || catalog!.whatsappNumber!,
                                 product.whatsappMessage ||
                                   `Hola, me interesa: *${product.name}* — ${product.currency} ${Number(product.price).toFixed(2)}`,
+                                product.id,
                               )}
                               target="_blank" rel="noopener noreferrer"
                               className={`btn btn-sm ${styles.btnWa}`}

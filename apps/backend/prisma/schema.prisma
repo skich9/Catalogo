@@ -216,6 +216,7 @@ model Product {
   specs      ProductSpec[]
   cartItems  CartItem[]
   orderItems OrderItem[]
+  clicks     ProductClick[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -360,6 +361,22 @@ model Payment {
 
   @@index([orderId])
   @@index([status])
+}
+
+// ─── CLICK TRACKING ───────────────────────────────────────────────────────────
+
+model ProductClick {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tenantId  String
+  type      String   @default("whatsapp") // whatsapp | facebook | cart
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([tenantId])
+  @@index([tenantId, type])
+  @@index([tenantId, createdAt])
 }
 
 // ─── PLAN CONFIG ──────────────────────────────────────────────────────────────

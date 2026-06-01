@@ -11,6 +11,7 @@ import { PublicModule } from './modules/public/public.module';
 import { TenantsModule } from './modules/tenants/tenants.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
     TenantsModule,
     StorageModule,
     CategoriesModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule {}
