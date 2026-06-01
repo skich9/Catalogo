@@ -82,6 +82,20 @@ export class ProductsController {
 
   // ─── Imágenes ─────────────────────────────────────────────────────────────
 
+  @Post(':id/images/link')
+  @Roles(UserRole.EMPLOYEE)
+  @ApiOperation({ summary: 'Vincular URL de Cloudinary ya subida a un producto' })
+  async linkImage(
+    @Param('id') id: string,
+    @CurrentUser('tenantId') tenantId: string,
+    @Body() body: { url: string; publicId?: string; resourceType?: 'image' | 'video' },
+  ) {
+    await this.productsService.findOne(id, tenantId);
+    return this.productsService.addImage(
+      id, body.url, body.publicId, body.resourceType || 'image',
+    );
+  }
+
   @Post(':id/images')
   @Roles(UserRole.EMPLOYEE)
   @ApiOperation({ summary: 'Subir imagen o video del producto' })

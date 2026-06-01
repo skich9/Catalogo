@@ -36,7 +36,6 @@ export function useNewProduct() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [saving, setSaving]   = useState(false);
   const [error, setError]     = useState('');
-  const [createdId, setCreatedId] = useState<string | null>(null);
 
   useEffect(() => {
     api.get('/categories').then((r) => setCategories(r.data || [])).catch(() => {});
@@ -75,15 +74,18 @@ export function useNewProduct() {
       };
 
       const { data: product } = await api.post('/products', payload);
-      setCreatedId(product.id);
 
-      // Subir imágenes/videos al producto recién creado
+      // Vincular las imágenes/videos ya subidos a Cloudinary con el producto
       if (media.length > 0) {
-        for (const item of media) {
-          if (item.url.startsWith('blob:') || !item.id) {
-            // Si hay blobs pendientes (raro con el uploader), se ignoran
-          }
-        }
+        await Promise.all(
+          media.map((item) =>
+            api.post(`/products/${product.id}/images/link`, {
+              url:          item.url,
+              publicId:     item.publicId,
+              resourceType: item.resourceType || 'image',
+            }).catch(() => {})
+          )
+        );
       }
 
       router.push('/products');
