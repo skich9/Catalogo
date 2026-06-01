@@ -1,0 +1,134 @@
+.hero {
+  background: linear-gradient(145deg, #0f172a 0%, #1e293b 40%, #047857 100%);
+  color: white;
+  padding: 56px 0 44px;
+  text-align: center;
+}
+
+.heroLogo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+}
+
+.heroTitle {
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.heroDesc {
+  color: rgba(255,255,255,0.75);
+  max-width: 520px;
+  margin: 0 auto 1.25rem;
+}
+
+.filterBar {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 56px;
+  z-index: 10;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.grid {
+  padding: 2rem 0 4rem;
+  background: #f1f5f9;
+}
+
+.productCard {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 28px rgba(16,185,129,0.15) !important;
+  border-color: #10b981 !important;
+}
+
+.productImage {
+  height: 178px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.featuredBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: #f59e0b !important;
+  color: #1e293b !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.productName {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.productCategory {
+  font-size: 0.73rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-weight: 800;
+  color: #059669;
+  font-size: 1rem;
+}
+
+.comparePrice {
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-size: 0.78rem;
+}
+
+.btnWa {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+.btnWa:hover { background: #1da851; color: #fff; }
+
+.btnFb {
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+.btnFb:hover { background: #145dbf; color: #fff; }
+
+.cartNotif {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  min-width: 240px;
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+  color: #047857 !important;
+  border-radius: 10px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 5rem 0;
+  color: #94a3b8;
+}

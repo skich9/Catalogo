@@ -1,0 +1,66 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0f172a 0%, #1e293b 50%, #134e4a 100%);
+  padding: 2rem 1rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.logoArea {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.logoText {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #047857;
+  letter-spacing: -0.5px;
+}
+
+.title {
+  font-weight: 700;
+  text-align: center;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+  font-size: 0.87rem;
+  color: #334155;
+}
+
+.urlPrefix {
+  background: #f1f5f9;
+  border-right: none;
+  color: #94a3b8;
+  font-size: 0.83rem;
+  border-color: #e2e8f0;
+}
+
+.footer {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}

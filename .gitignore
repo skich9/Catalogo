@@ -33,6 +33,11 @@ desktop.ini
 *.swp
 *.swo
 
+# Claude Code / AI agents
+AGENTS.md
+CLAUDE.md
+.claude/
+
 # Testing
 coverage/
 

@@ -1,0 +1,120 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.greeting {
+  font-weight: 800;
+  color: #1e293b;
+  font-size: 1.6rem;
+  margin-bottom: 0.15rem;
+}
+
+.tenantName {
+  color: #94a3b8;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.statCard {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.statCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(16,185,129,0.12);
+  color: inherit;
+  border-color: #10b981;
+}
+
+.statInner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.statAccent {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 0;
+  margin: -1.25rem 0 -1.25rem -1.25rem;
+}
+
+.statIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.statLabel {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  margin-bottom: 0.1rem;
+}
+
+.statValue {
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: #1e293b;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.actionsSection {
+  margin-top: 1.75rem;
+}
+
+.actionsCard {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.actionsHeader {
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  color: #f1f5f9;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.25rem;
+  letter-spacing: 0.3px;
+}
+
+.actionsBody {
+  padding: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.planBanner {
+  margin-top: 1.25rem;
+  background: linear-gradient(90deg, #ecfdf5, #d1fae5);
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.planText {
+  color: #047857;
+  font-size: 0.9rem;
+  margin: 0;
+}

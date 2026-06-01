@@ -1,0 +1,270 @@
+.page {
+  max-width: 780px;
+}
+
+.pageTitle {
+  font-weight: 800;
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.pageSub {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ─── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: #e2e8f0;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  flex: 1;
+  min-width: 110px;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  text-align: center;
+}
+
+.tab:hover { color: #1e293b; background: rgba(255,255,255,0.6); }
+
+.tabActive {
+  background: #ffffff;
+  color: #059669;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ─── Sección ─────────────────────────────────────────────────────────────── */
+.section {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  padding: 1rem 1.4rem;
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sectionIcon { font-size: 1.1rem; }
+
+.sectionTitle {
+  font-weight: 700;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.sectionBody {
+  padding: 1.4rem;
+}
+
+/* ─── Campos ──────────────────────────────────────────────────────────────── */
+.label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #334155;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.25rem;
+}
+
+/* ─── Color picker ────────────────────────────────────────────────────────── */
+.colorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.colorInput {
+  width: 48px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  padding: 2px;
+  background: none;
+  flex-shrink: 0;
+}
+
+.colorHex {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #334155;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* ─── Presets de color ────────────────────────────────────────────────────── */
+.presets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.preset {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.preset:hover { transform: scale(1.2); }
+.presetActive { border-color: #1e293b !important; transform: scale(1.15); }
+
+/* ─── Preview catálogo ────────────────────────────────────────────────────── */
+.preview {
+  margin-top: 1.25rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.previewBar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 6px;
+}
+
+.previewDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+
+.previewDotTitle {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.previewBody {
+  background: #f1f5f9;
+  padding: 0.9rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.previewCard {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.previewImg {
+  height: 50px;
+  background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+}
+
+.previewCardBody {
+  padding: 0.4rem 0.5rem;
+}
+
+.previewCardLine {
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+  margin-bottom: 4px;
+}
+
+.previewBtn {
+  height: 16px;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+/* ─── Toggle cartMode ─────────────────────────────────────────────────────── */
+.modeToggle {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.modeOption {
+  flex: 1;
+  min-width: 180px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+  text-align: center;
+  background: #fff;
+}
+
+.modeOption:hover { border-color: #10b981; background: #f0fdf4; }
+
+.modeOptionActive {
+  border-color: #059669;
+  background: #ecfdf5;
+}
+
+.modeIcon { font-size: 1.8rem; display: block; margin-bottom: 0.4rem; }
+.modeLabel { font-weight: 700; color: #1e293b; font-size: 0.88rem; }
+.modeDesc  { font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem; }
+
+/* ─── Footer de acciones ──────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.4rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.savedMsg {
+  font-size: 0.85rem;
+  color: #059669;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dirtyDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  display: inline-block;
+  margin-right: 0.3rem;
+}
