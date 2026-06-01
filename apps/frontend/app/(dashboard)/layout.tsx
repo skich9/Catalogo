@@ -5,13 +5,11 @@ import styles from './dashboard.layout.module.css';
 import { NAV_ITEMS, useDashboardLayout } from './useDashboardLayout';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, initializing, pathname, handleLogout } = useDashboardLayout();
+  const { user, initializing, pathname, handleLogout, dark, toggleDark } = useDashboardLayout();
 
-  // Solo muestra spinner en la carga inicial, no en cada navegación
   if (initializing) {
     return (
-      <div className="min-vh-100 d-flex align-items-center justify-content-center"
-        style={{ background: '#0f172a' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f172a' }}>
         <div className="spinner-border" style={{ color: '#10b981' }} />
       </div>
     );
@@ -20,52 +18,51 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className={styles.shell}>
-      {/* Sidebar */}
+    <div className={styles.shell} data-theme={dark ? 'dark' : 'light'}>
+
+      {/* ─── Sidebar ─────────────────────────────────────────────────────── */}
       <aside className={`${styles.sidebar} d-none d-md-flex flex-column`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.sidebarLogo}>CatálogoSaaS</div>
           <p className={styles.businessName}>{user.tenant.name}</p>
-          <small className={styles.userName}>
-            {user.firstName} {user.lastName}
-          </small>
+          <small className={styles.userName}>{user.firstName} {user.lastName}</small>
           <br />
           <span className={styles.roleBadge}>{user.role}</span>
         </div>
 
         <nav className={styles.nav}>
           {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`${styles.navLink} ${pathname === item.href ? styles.navLinkActive : ''}`}
-            >
-              <span>{item.icon}</span>
-              {item.label}
+            <Link key={item.href} href={item.href}
+              className={`${styles.navLink} ${pathname === item.href ? styles.navLinkActive : ''}`}>
+              <span>{item.icon}</span>{item.label}
             </Link>
           ))}
           {user.role === 'SUPER_ADMIN' && (
-            <Link
-              href="/admin"
-              className={`${styles.navLink} ${pathname.startsWith('/admin') ? styles.navLinkActive : ''}`}
-            >
-              <span>👑</span> SuperAdmin
+            <Link href="/admin"
+              className={`${styles.navLink} ${pathname.startsWith('/admin') ? styles.navLinkActive : ''}`}>
+              <span>👑</span>SuperAdmin
             </Link>
           )}
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <a
-            href={`/catalog/${user.tenant.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.catalogLink}
-          >
+          <a href={`/catalog/${user.tenant.slug}`} target="_blank" rel="noopener noreferrer"
+            className={styles.catalogLink}>
             🔗 Ver mi catálogo público
           </a>
+
+          {/* Toggle Dark Mode */}
           <button
-            className="btn btn-sm w-100"
-            style={{ background: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)' }}
+            onClick={toggleDark}
+            className={styles.darkToggle}
+            title={dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+          >
+            <span className={styles.darkToggleIcon}>{dark ? '☀️' : '🌙'}</span>
+            <span>{dark ? 'Modo claro' : 'Modo oscuro'}</span>
+          </button>
+
+          <button
+            className={styles.logoutBtn}
             onClick={handleLogout}
           >
             Cerrar sesión
@@ -73,10 +70,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      {/* Contenido principal */}
-      <main className={styles.main}>
+      {/* ─── Contenido principal ─────────────────────────────────────────── */}
+      <main className={`${styles.main} ${dark ? styles.mainDark : ''}`}>
         {children}
       </main>
+
     </div>
   );
 }

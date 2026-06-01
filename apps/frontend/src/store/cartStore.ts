@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import api from '../lib/api';
 
-interface CartItem {
+export interface CartItem {
   id: string;
   productId: string;
   productName: string;
@@ -25,6 +25,18 @@ interface CartState {
   checkout: (tenantId: string, data: any) => Promise<any>;
 }
 
+// Normaliza items del API (que traen product.name anidado) al formato flat del store
+function normalizeItems(rawItems: any[]): CartItem[] {
+  return (rawItems || []).map((item) => ({
+    id:           item.id,
+    productId:    item.productId,
+    productName:  item.productName ?? item.product?.name ?? 'Producto',
+    quantity:     item.quantity,
+    priceSnapshot: Number(item.priceSnapshot),
+    imageUrl:     item.product?.images?.[0]?.url ?? item.imageUrl,
+  }));
+}
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -36,7 +48,7 @@ export const useCartStore = create<CartState>()(
       fetchCart: async (tenantId) => {
         const { sessionId } = get();
         const { data } = await api.get(`/cart/${sessionId}?tenantId=${tenantId}`);
-        set({ items: data.items || [], total: data.total || 0 });
+        set({ items: normalizeItems(data.items), total: data.total || 0 });
       },
 
       addItem: async (tenantId, productId, quantity = 1) => {
@@ -47,7 +59,7 @@ export const useCartStore = create<CartState>()(
             `/cart/${sessionId}/items?tenantId=${tenantId}`,
             { productId, quantity },
           );
-          set({ items: data.items || [], total: data.total || 0 });
+          set({ items: normalizeItems(data.items), total: data.total || 0 });
         } finally {
           set({ loading: false });
         }
@@ -56,13 +68,13 @@ export const useCartStore = create<CartState>()(
       updateItem: async (itemId, quantity) => {
         const { sessionId } = get();
         const { data } = await api.patch(`/cart/${sessionId}/items/${itemId}`, { quantity });
-        set({ items: data.items || [], total: data.total || 0 });
+        set({ items: normalizeItems(data.items), total: data.total || 0 });
       },
 
       removeItem: async (itemId) => {
         const { sessionId } = get();
         const { data } = await api.delete(`/cart/${sessionId}/items/${itemId}`);
-        set({ items: data.items || [], total: data.total || 0 });
+        set({ items: normalizeItems(data.items), total: data.total || 0 });
       },
 
       clearCart: async () => {

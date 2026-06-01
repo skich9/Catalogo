@@ -51,9 +51,9 @@
 
 /* ─── Sección ─────────────────────────────────────────────────────────────── */
 .section {
-  background: #ffffff;
+  background: var(--dash-card, #ffffff);
   border-radius: 14px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--dash-border, #e2e8f0);
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   overflow: hidden;
 }
@@ -83,7 +83,7 @@
 .label {
   font-weight: 600;
   font-size: 0.85rem;
-  color: #334155;
+  color: var(--dash-text, #334155);
   margin-bottom: 0.3rem;
   display: block;
 }

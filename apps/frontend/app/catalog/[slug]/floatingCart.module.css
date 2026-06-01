@@ -1,8 +1,8 @@
-/* ─── Botón FAB ───────────────────────────────────────────────────────────── */
+/* ─── Botón FAB ─────────────────────────────── DERECHO INFERIOR ─────────── */
 .fab {
   position: fixed;
   bottom: 28px;
-  left: 28px;
+  right: 28px;          /* ← Lado derecho */
   z-index: 200;
   width: 58px;
   height: 58px;
@@ -49,11 +49,12 @@
   line-height: 1;
 }
 
-/* ─── Panel flotante ──────────────────────────────────────────────────────── */
+/* ─── Panel flotante ──────────────────────────── DERECHO ─────────────────── */
 .panel {
   position: fixed;
   bottom: 100px;
-  left: 28px;
+  right: 28px;          /* ← Derecha también */
+  left: auto;
   z-index: 199;
   width: 320px;
   max-height: 70vh;
@@ -64,7 +65,14 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform-origin: bottom left;
+  transform-origin: bottom right;  /* ← Origen desde la derecha */
+}
+
+/* Dark mode */
+.dark .panel {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .panelHeader {
@@ -109,22 +117,49 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.6rem 1rem;
+  padding: 0.65rem 1rem;
   border-bottom: 1px solid #f1f5f9;
 }
 .item:last-child { border-bottom: none; }
 
+.itemImg {
+  width: 38px;
+  height: 38px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+
+.itemImgPlaceholder {
+  width: 38px;
+  height: 38px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
 .itemName {
   font-size: 0.83rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #1e293b;
-  flex: 1;
-  line-height: 1.3;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .itemPrice {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #94a3b8;
   display: block;
 }
@@ -184,7 +219,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
 }
 
 .totalLabel { font-weight: 700; color: #334155; font-size: 0.9rem; }
@@ -193,17 +228,37 @@
 .payBtn {
   display: block;
   width: 100%;
-  padding: 0.65rem;
+  padding: 0.6rem;
   background: linear-gradient(90deg, #059669, #10b981);
   color: white;
   border: none;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   transition: opacity 0.15s, transform 0.15s;
   box-shadow: 0 3px 12px rgba(5, 150, 105, 0.35);
+  margin-bottom: 0.45rem;
 }
 .payBtn:hover { opacity: 0.92; transform: translateY(-1px); color: white; }
+
+.waBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.55rem;
+  background: #25d366;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.waBtn:hover { opacity: 0.88; color: white; }

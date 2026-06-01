@@ -3,6 +3,7 @@
   min-height: 100vh;
 }
 
+/* ─── Sidebar (siempre oscuro, no cambia con dark mode) ───────────────────── */
 .sidebar {
   width: 260px;
   min-height: 100vh;
@@ -84,6 +85,9 @@
 .sidebarFooter {
   padding: 1rem;
   border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .catalogLink {
@@ -92,17 +96,64 @@
   font-size: 0.8rem;
   color: #94a3b8;
   text-decoration: none;
-  margin-bottom: 0.75rem;
   transition: color 0.15s;
 }
 
-.catalogLink:hover {
-  color: #10b981;
+.catalogLink:hover { color: #10b981; }
+
+/* ─── Toggle dark mode ────────────────────────────────────────────────────── */
+.darkToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+  justify-content: center;
 }
 
+.darkToggle:hover {
+  background: rgba(16,185,129,0.12);
+  color: #10b981;
+  border-color: rgba(16,185,129,0.3);
+}
+
+.darkToggleIcon { font-size: 1rem; }
+
+/* ─── Logout ──────────────────────────────────────────────────────────────── */
+.logoutBtn {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s;
+}
+
+.logoutBtn:hover { background: rgba(239,68,68,0.18); }
+
+/* ─── Área de contenido principal ────────────────────────────────────────── */
 .main {
   flex: 1;
-  background: #f1f5f9;
+  background: var(--dash-bg, #f1f5f9);
   padding: 2rem;
   overflow-y: auto;
+  color: var(--dash-text, #1e293b);
+  transition: background 0.25s, color 0.25s;
+}
+
+.mainDark {
+  background: #0f172a !important;
+  color: #f1f5f9 !important;
 }

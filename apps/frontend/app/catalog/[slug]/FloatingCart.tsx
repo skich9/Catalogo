@@ -8,11 +8,18 @@ import { useFloatingCart } from './useFloatingCart';
 interface Props {
   slug: string;
   tenantId: string | null;
+  waPhone?: string | null;
 }
 
-export function FloatingCart({ slug, tenantId }: Props) {
-  const { open, setOpen, panelRef, btnRef, items, total, totalItems, updateItem, removeItem } =
-    useFloatingCart(tenantId);
+export function FloatingCart({ slug, tenantId, waPhone }: Props) {
+  const {
+    open, setOpen, panelRef, btnRef,
+    items, total, totalItems,
+    updateItem, removeItem,
+    buildCartWaLink,
+  } = useFloatingCart(tenantId, waPhone);
+
+  const waLink = buildCartWaLink();
 
   return (
     <>
@@ -38,29 +45,34 @@ export function FloatingCart({ slug, tenantId }: Props) {
               {items.length === 0 ? (
                 <p className={styles.emptyMsg}>Tu carrito está vacío</p>
               ) : (
-                items.map((item: any) => (
+                items.map((item) => (
                   <div key={item.id} className={styles.item}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
+                    {/* Imagen del producto */}
+                    {item.imageUrl
+                      ? <img src={item.imageUrl} className={styles.itemImg} alt={item.productName} />
+                      : <div className={styles.itemImgPlaceholder}>📦</div>
+                    }
+
+                    {/* Info */}
+                    <div className={styles.itemInfo}>
                       <p className={styles.itemName}>{item.productName}</p>
                       <span className={styles.itemPrice}>
                         BOB {Number(item.priceSnapshot).toFixed(2)} c/u
                       </span>
                     </div>
+
+                    {/* Controles de cantidad */}
                     <div className={styles.qtyControls}>
-                      <button
-                        className={styles.qtyBtn}
-                        onClick={() => updateItem(item.id, item.quantity - 1)}
-                      >−</button>
+                      <button className={styles.qtyBtn}
+                        onClick={() => updateItem(item.id, item.quantity - 1)}>−</button>
                       <span className={styles.qty}>{item.quantity}</span>
-                      <button
-                        className={styles.qtyBtn}
-                        onClick={() => updateItem(item.id, item.quantity + 1)}
-                      >+</button>
-                      <button
-                        className={`${styles.qtyBtn} ${styles.qtyBtnDel}`}
-                        onClick={() => removeItem(item.id)}
-                      >🗑</button>
+                      <button className={styles.qtyBtn}
+                        onClick={() => updateItem(item.id, item.quantity + 1)}>+</button>
+                      <button className={`${styles.qtyBtn} ${styles.qtyBtnDel}`}
+                        onClick={() => removeItem(item.id)}>🗑</button>
                     </div>
+
+                    {/* Total del item */}
                     <span className={styles.itemTotal}>
                       BOB {(Number(item.priceSnapshot) * item.quantity).toFixed(2)}
                     </span>
@@ -69,20 +81,37 @@ export function FloatingCart({ slug, tenantId }: Props) {
               )}
             </div>
 
-            {/* Footer con total y botón pagar */}
-            <div className={styles.panelFooter}>
-              <div className={styles.totalRow}>
-                <span className={styles.totalLabel}>Total</span>
-                <span className={styles.totalValue}>BOB {Number(total).toFixed(2)}</span>
+            {/* Footer */}
+            {items.length > 0 && (
+              <div className={styles.panelFooter}>
+                <div className={styles.totalRow}>
+                  <span className={styles.totalLabel}>Total</span>
+                  <span className={styles.totalValue}>BOB {Number(total).toFixed(2)}</span>
+                </div>
+
+                {/* Botón de checkout completo */}
+                <Link
+                  href={`/catalog/${slug}/cart`}
+                  className={styles.payBtn}
+                  onClick={() => setOpen(false)}
+                >
+                  Ver pedido completo →
+                </Link>
+
+                {/* Botón WhatsApp directo (para cuando no hay pasarela de pago) */}
+                {waLink && (
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.waBtn}
+                    onClick={() => setOpen(false)}
+                  >
+                    💬 Pedir por WhatsApp
+                  </a>
+                )}
               </div>
-              <Link
-                href={`/catalog/${slug}/cart`}
-                className={styles.payBtn}
-                onClick={() => setOpen(false)}
-              >
-                Proceder al pago →
-              </Link>
-            </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

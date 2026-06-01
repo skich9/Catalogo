@@ -9,33 +9,33 @@
 
 .greeting {
   font-weight: 800;
-  color: #1e293b;
+  color: var(--dash-text, #1e293b);
   font-size: 1.6rem;
   margin-bottom: 0.15rem;
 }
 
 .tenantName {
-  color: #94a3b8;
+  color: var(--dash-text-muted, #94a3b8);
   margin-bottom: 0;
   font-size: 0.9rem;
 }
 
 .statCard {
-  background: #ffffff;
+  background: var(--dash-card, #ffffff);
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   transition: transform 0.2s, box-shadow 0.2s;
   text-decoration: none;
-  color: inherit;
+  color: var(--dash-text, #1e293b);
   display: block;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--dash-border, #e2e8f0);
   overflow: hidden;
 }
 
 .statCard:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(16,185,129,0.12);
-  color: inherit;
+  color: var(--dash-text, #1e293b);
   border-color: #10b981;
 }
 
@@ -53,33 +53,16 @@
   margin: -1.25rem 0 -1.25rem -1.25rem;
 }
 
-.statIcon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
+.statIcon     { font-size: 2rem; flex-shrink: 0; }
+.statLabel    { color: var(--dash-text-muted, #94a3b8); font-size: 0.82rem; margin-bottom: 0.1rem; }
+.statValue    { font-weight: 800; font-size: 1.8rem; color: var(--dash-text, #1e293b); line-height: 1; margin-bottom: 0; }
 
-.statLabel {
-  color: #94a3b8;
-  font-size: 0.82rem;
-  margin-bottom: 0.1rem;
-}
-
-.statValue {
-  font-weight: 800;
-  font-size: 1.8rem;
-  color: #1e293b;
-  line-height: 1;
-  margin-bottom: 0;
-}
-
-.actionsSection {
-  margin-top: 1.75rem;
-}
+.actionsSection { margin-top: 1.75rem; }
 
 .actionsCard {
-  background: #ffffff;
+  background: var(--dash-card, #ffffff);
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--dash-border, #e2e8f0);
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   overflow: hidden;
 }
@@ -98,6 +81,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  background: var(--dash-card, #ffffff);
+}
+
+.actionBtn {
+  background: var(--dash-hover, #f1f5f9) !important;
+  color: var(--dash-text, #334155) !important;
+  border: 1px solid var(--dash-border, #e2e8f0) !important;
 }
 
 .planBanner {
@@ -113,8 +103,4 @@
   gap: 0.5rem;
 }
 
-.planText {
-  color: #047857;
-  font-size: 0.9rem;
-  margin: 0;
-}
+.planText    { color: #047857; font-size: 0.9rem; margin: 0; }
