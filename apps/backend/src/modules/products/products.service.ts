@@ -5,6 +5,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { generateSlug } from '../../common/utils/slug.util';
 import { ProductStatus } from '@prisma/client';
+import type { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class ProductsService {
@@ -103,5 +104,35 @@ export class ProductsService {
   async updateStatus(id: string, tenantId: string, status: ProductStatus) {
     await this.findOne(id, tenantId);
     return this.prisma.product.update({ where: { id }, data: { status } });
+  }
+
+  // ─── Gestión de imágenes ────────────────────────────────────────────────
+
+  async addImage(productId: string, url: string, publicId?: string) {
+    const count = await this.prisma.productImage.count({ where: { productId } });
+    return this.prisma.productImage.create({
+      data: { productId, url, publicId, isPrimary: count === 0, sortOrder: count },
+    });
+  }
+
+  async removeImage(productId: string, imageId: string, storage: StorageService) {
+    const img = await this.prisma.productImage.findFirst({ where: { id: imageId, productId } });
+    if (!img) throw new NotFoundException('Imagen no encontrada');
+
+    if (img.publicId) await storage.delete(img.publicId);
+    await this.prisma.productImage.delete({ where: { id: imageId } });
+
+    // Si era la principal, promover la siguiente
+    if (img.isPrimary) {
+      const next = await this.prisma.productImage.findFirst({ where: { productId } });
+      if (next) await this.prisma.productImage.update({ where: { id: next.id }, data: { isPrimary: true } });
+    }
+    return { message: 'Imagen eliminada' };
+  }
+
+  async setImagePrimary(productId: string, imageId: string, tenantId: string) {
+    await this.findOne(productId, tenantId);
+    await this.prisma.productImage.updateMany({ where: { productId }, data: { isPrimary: false } });
+    return this.prisma.productImage.update({ where: { id: imageId }, data: { isPrimary: true } });
   }
 }

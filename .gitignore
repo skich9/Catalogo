@@ -1,8 +1,40 @@
+# Dependencias
 node_modules/
+.pnpm-store/
+
+# Build outputs
 dist/
+build/
 .next/
+.turbo/
+
+# Variables de entorno (nunca subir al repo)
 .env
 .env.local
+.env.*.local
+
+# Prisma
+apps/backend/prisma/migrations/
+apps/backend/generated/
+
+# Logs
 *.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+coverage/
+
+# Cloudinary / uploads temporales
+uploads/
