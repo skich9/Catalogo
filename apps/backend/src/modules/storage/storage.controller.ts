@@ -57,7 +57,7 @@ export class StorageController {
     return this.storageService.uploadBuffer(file.buffer, 'catalogo-saas/qr-codes');
   }
 
-  @Delete(':publicId(*)')
+  @Delete('delete/:publicId')
   @ApiOperation({ summary: 'Eliminar imagen de Cloudinary' })
   async delete(@Param('publicId') publicId: string) {
     await this.storageService.delete(publicId);

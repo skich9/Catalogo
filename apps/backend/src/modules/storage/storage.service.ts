@@ -1,13 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 
 export interface UploadResult {
   url: string;
   publicId: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   format: string;
+  resourceType: 'image' | 'video';
+  duration?: number;
 }
 
 @Injectable()
@@ -23,39 +25,42 @@ export class StorageService {
   async uploadBuffer(
     buffer: Buffer,
     folder: string,
-    filename?: string,
+    resourceType: 'image' | 'video' | 'auto' = 'auto',
   ): Promise<UploadResult> {
     return new Promise((resolve, reject) => {
-      const options: any = {
-        folder,
-        resource_type: 'image',
-        transformation: [{ quality: 'auto', fetch_format: 'auto' }],
-      };
-      if (filename) options.public_id = filename;
-
-      const stream = cloudinary.uploader.upload_stream(options, (err, result) => {
-        if (err || !result) {
-          reject(new InternalServerErrorException('Error subiendo imagen a Cloudinary'));
-          return;
-        }
-        resolve({
-          url:      result.secure_url,
-          publicId: result.public_id,
-          width:    result.width,
-          height:   result.height,
-          format:   result.format,
-        });
-      });
-
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder,
+          resource_type: resourceType,
+          transformation: resourceType === 'image'
+            ? [{ quality: 'auto', fetch_format: 'auto' }]
+            : undefined,
+        },
+        (err, result) => {
+          if (err || !result) {
+            reject(new InternalServerErrorException('Error subiendo archivo a Cloudinary'));
+            return;
+          }
+          resolve({
+            url:          result.secure_url,
+            publicId:     result.public_id,
+            width:        result.width,
+            height:       result.height,
+            format:       result.format,
+            resourceType: result.resource_type as 'image' | 'video',
+            duration:     (result as any).duration,
+          });
+        },
+      );
       stream.end(buffer);
     });
   }
 
-  async delete(publicId: string): Promise<void> {
+  async delete(publicId: string, resourceType: 'image' | 'video' = 'image'): Promise<void> {
     try {
-      await cloudinary.uploader.destroy(publicId);
+      await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
     } catch {
-      // No lanzar error si la imagen no existe en Cloudinary
+      // No lanzar error si la imagen no existe
     }
   }
 }

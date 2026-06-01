@@ -108,10 +108,19 @@ export class ProductsService {
 
   // ─── Gestión de imágenes ────────────────────────────────────────────────
 
-  async addImage(productId: string, url: string, publicId?: string) {
+  async addImage(
+    productId: string,
+    url: string,
+    publicId?: string,
+    resourceType: 'image' | 'video' = 'image',
+  ) {
     const count = await this.prisma.productImage.count({ where: { productId } });
     return this.prisma.productImage.create({
-      data: { productId, url, publicId, isPrimary: count === 0, sortOrder: count },
+      data: {
+        productId, url, publicId, resourceType,
+        isPrimary: count === 0 && resourceType === 'image',
+        sortOrder: count,
+      },
     });
   }
 

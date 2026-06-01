@@ -14,8 +14,10 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { StorageService } from '../storage/storage.service';
 
-const MAX_SIZE   = 5 * 1024 * 1024;
-const ALLOWED    = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const MAX_IMG  = 5  * 1024 * 1024;   // 5 MB imágenes
+const MAX_VID  = 50 * 1024 * 1024;   // 50 MB videos
+const ALLOWED_IMG = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const ALLOWED_VID = ['video/mp4', 'video/webm', 'video/quicktime', 'video/avi'];
 
 @ApiTags('Products')
 @ApiBearerAuth()
@@ -82,14 +84,15 @@ export class ProductsController {
 
   @Post(':id/images')
   @Roles(UserRole.EMPLOYEE)
-  @ApiOperation({ summary: 'Subir imagen del producto' })
+  @ApiOperation({ summary: 'Subir imagen o video del producto' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('file', {
-      limits: { fileSize: MAX_SIZE },
+      limits: { fileSize: MAX_VID },
       fileFilter: (_, file, cb) => {
-        if (!ALLOWED.includes(file.mimetype)) {
-          return cb(new BadRequestException('Solo imágenes JPG, PNG, WebP o GIF'), false);
+        const allowed = [...ALLOWED_IMG, ...ALLOWED_VID];
+        if (!allowed.includes(file.mimetype)) {
+          return cb(new BadRequestException('Formato no soportado. Use JPG, PNG, WebP, MP4 o WebM'), false);
         }
         cb(null, true);
       },
@@ -101,12 +104,16 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (!file) throw new BadRequestException('No se recibió ningún archivo');
-    await this.productsService.findOne(id, tenantId); // verifica que pertenece al tenant
+    await this.productsService.findOne(id, tenantId);
+    const isVideo = ALLOWED_VID.includes(file.mimetype);
     const uploaded = await this.storageService.uploadBuffer(
       file.buffer,
       `catalogo-saas/products/${id}`,
+      isVideo ? 'video' : 'image',
     );
-    return this.productsService.addImage(id, uploaded.url, uploaded.publicId);
+    return this.productsService.addImage(
+      id, uploaded.url, uploaded.publicId, uploaded.resourceType,
+    );
   }
 
   @Delete(':id/images/:imageId')
