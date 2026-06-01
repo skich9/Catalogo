@@ -128,7 +128,45 @@
 }
 
 .emptyState {
+  grid-column: 1 / -1;
   text-align: center;
-  padding: 5rem 0;
-  color: #94a3b8;
+  padding: 4rem 1rem;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed #e2e8f0;
+}
+
+.emptyIcon { font-size: 3rem; display: block; margin-bottom: 0.75rem; }
+.emptyTitle { font-weight: 700; color: #334155; font-size: 1.1rem; margin-bottom: 0.4rem; }
+.emptyText { color: #94a3b8; font-size: 0.88rem; }
+
+/* ─── Skeleton loading ────────────────────────────────────────────────────── */
+.skeleton {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.skeletonImg {
+  height: 178px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeletonBody { padding: 0.85rem; }
+
+.skeletonLine {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

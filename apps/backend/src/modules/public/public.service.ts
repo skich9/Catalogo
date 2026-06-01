@@ -13,6 +13,7 @@ export class PublicService {
         description: true, facebookPageUrl: true, whatsappNumber: true,
         whatsappMessage: true, cartMode: true, paymentQrUrl: true,
         paymentInstructions: true, address: true, website: true,
+        primaryColor: true, secondaryColor: true,
         categories: {
           orderBy: { sortOrder: 'asc' },
           select: { id: true, name: true, slug: true, imageUrl: true },
@@ -46,7 +47,10 @@ export class PublicService {
           id: true, name: true, slug: true, description: true,
           price: true, comparePrice: true, currency: true,
           isFeatured: true, whatsappNumber: true, whatsappMessage: true, facebookUrl: true,
-          images: { where: { isPrimary: true }, take: 1, select: { url: true, altText: true } },
+          images: {
+            orderBy: [{ isPrimary: 'desc' }, { sortOrder: 'asc' }],
+            select: { id: true, url: true, altText: true, isPrimary: true, resourceType: true },
+          },
           category: { select: { name: true, slug: true } },
           specs: { orderBy: { sortOrder: 'asc' }, select: { key: true, value: true } },
         },
