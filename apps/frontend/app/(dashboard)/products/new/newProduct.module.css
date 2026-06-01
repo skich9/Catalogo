@@ -1,6 +1,4 @@
-.page {
-  max-width: 860px;
-}
+.page { max-width: 1100px; }
 
 .header {
   display: flex;
@@ -11,10 +9,10 @@
 }
 
 .backBtn {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-hover, #f1f5f9);
+  border: 1px solid var(--dash-border, #e2e8f0);
   border-radius: 8px;
-  color: #64748b;
+  color: var(--dash-text-muted, #64748b);
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.45rem 0.9rem;
@@ -25,19 +23,19 @@
   align-items: center;
   gap: 0.35rem;
 }
-.backBtn:hover { background: #e2e8f0; color: #334155; }
+.backBtn:hover { background: var(--dash-border, #e2e8f0); color: var(--dash-text, #334155); }
 
 .title {
   font-weight: 800;
-  color: #1e293b;
+  color: var(--dash-text, #1e293b);
   font-size: 1.4rem;
   margin: 0;
 }
 
-/* ─── Layout dos columnas ──────────────────────────────────────────────────── */
+/* ─── Layout dos columnas ─────────────────────────────────────────────────── */
 .layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 1fr 340px;
   gap: 1.25rem;
   align-items: start;
 }
@@ -46,14 +44,24 @@
   .layout { grid-template-columns: 1fr; }
 }
 
+/* ─── Columna derecha sticky ─────────────────────────────────────────────── */
+.rightColumn {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* Sin height fijo — el contenido fluye naturalmente */
+}
+
 /* ─── Cards ───────────────────────────────────────────────────────────────── */
 .card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-card, #ffffff);
+  border: 1px solid var(--dash-border, #e2e8f0);
   border-radius: 14px;
   overflow: hidden;
   margin-bottom: 1.25rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
 .cardHeader {
@@ -63,35 +71,24 @@
   align-items: center;
   gap: 0.5rem;
 }
-
-.cardIcon { font-size: 1rem; }
-
-.cardTitle {
-  color: #f1f5f9;
-  font-weight: 700;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.cardBody { padding: 1.25rem; }
+.cardIcon  { font-size: 1rem; }
+.cardTitle { color: #f1f5f9; font-weight: 700; font-size: 0.9rem; margin: 0; }
+.cardBody  { padding: 1.25rem; }
 
 /* ─── Campos ──────────────────────────────────────────────────────────────── */
 .label {
   font-weight: 600;
   font-size: 0.84rem;
-  color: #334155;
+  color: var(--dash-text, #334155);
   margin-bottom: 0.3rem;
   display: block;
 }
 
-.required {
-  color: #ef4444;
-  margin-left: 2px;
-}
+.required { color: #ef4444; margin-left: 2px; }
 
 .hint {
   font-size: 0.74rem;
-  color: #94a3b8;
+  color: var(--dash-text-muted, #94a3b8);
   margin-top: 0.2rem;
 }
 
@@ -103,11 +100,7 @@
   align-items: end;
 }
 
-.compareTag {
-  font-size: 0.72rem;
-  color: #94a3b8;
-  text-decoration: line-through;
-}
+.compareTag { font-size: 0.72rem; color: var(--dash-text-muted, #94a3b8); text-decoration: line-through; }
 
 /* ─── Specs ───────────────────────────────────────────────────────────────── */
 .specRow {
@@ -119,98 +112,58 @@
 }
 
 .specDelBtn {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+  width: 30px; height: 30px; border-radius: 6px;
   border: 1px solid rgba(239,68,68,0.3);
-  background: rgba(239,68,68,0.06);
-  color: #ef4444;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  transition: background 0.15s;
+  background: rgba(239,68,68,0.06); color: #ef4444;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; font-size: 0.85rem; transition: background 0.15s;
 }
 .specDelBtn:hover { background: rgba(239,68,68,0.15); }
 
 .addSpecBtn {
   background: none;
-  border: 1.5px dashed #cbd5e1;
-  border-radius: 8px;
-  color: #64748b;
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 0.45rem 0.9rem;
-  cursor: pointer;
-  width: 100%;
-  text-align: center;
-  transition: border-color 0.15s, color 0.15s;
-  margin-top: 0.25rem;
+  border: 1.5px dashed var(--dash-border, #cbd5e1);
+  border-radius: 8px; color: var(--dash-text-muted, #64748b);
+  font-size: 0.82rem; font-weight: 600; padding: 0.45rem 0.9rem;
+  cursor: pointer; width: 100%; text-align: center;
+  transition: border-color 0.15s, color 0.15s; margin-top: 0.25rem;
 }
 .addSpecBtn:hover { border-color: #059669; color: #059669; }
 
-/* ─── Toggle featured ─────────────────────────────────────────────────────── */
+/* ─── Toggle destacado ────────────────────────────────────────────────────── */
 .featuredToggle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  cursor: pointer;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: 1.5px solid #e2e8f0;
-  background: #f8fafc;
-  transition: border-color 0.15s, background 0.15s;
-  user-select: none;
+  display: flex; align-items: center; gap: 0.6rem; cursor: pointer;
+  padding: 0.75rem; border-radius: 10px;
+  border: 1.5px solid var(--dash-border, #e2e8f0);
+  background: var(--dash-hover, #f8fafc);
+  transition: border-color 0.15s, background 0.15s; user-select: none;
 }
 .featuredToggle:hover { border-color: #10b981; }
-.featuredToggleOn { border-color: #059669; background: #ecfdf5; }
+.featuredToggleOn { border-color: #059669; background: rgba(5,150,105,0.08); }
 
 .toggleTrack {
-  width: 38px;
-  height: 22px;
-  border-radius: 999px;
-  background: #e2e8f0;
-  position: relative;
-  transition: background 0.2s;
-  flex-shrink: 0;
+  width: 38px; height: 22px; border-radius: 999px;
+  background: var(--dash-border, #e2e8f0);
+  position: relative; transition: background 0.2s; flex-shrink: 0;
 }
 .toggleTrackOn { background: #059669; }
 
 .toggleThumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: white;
-  position: absolute;
-  top: 3px;
-  left: 3px;
-  transition: transform 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  width: 16px; height: 16px; border-radius: 50%;
+  background: white; position: absolute; top: 3px; left: 3px;
+  transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .toggleThumbOn { transform: translateX(16px); }
 
-/* ─── Botones de acción ───────────────────────────────────────────────────── */
-.actionBar {
-  display: flex;
-  gap: 0.65rem;
-  flex-direction: column;
-}
+/* ─── Botones acción ──────────────────────────────────────────────────────── */
+.actionBar { display: flex; gap: 0.65rem; flex-direction: column; }
 
 .btnPublish {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  padding: 0.8rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  width: 100%; padding: 0.8rem;
   background: linear-gradient(135deg, #059669, #10b981);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.92rem;
-  cursor: pointer;
+  color: white; border: none; border-radius: 10px;
+  font-weight: 700; font-size: 0.92rem; cursor: pointer;
   transition: opacity 0.15s, transform 0.15s;
   box-shadow: 0 3px 12px rgba(5,150,105,0.3);
 }
@@ -218,27 +171,181 @@
 .btnPublish:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .btnDraft {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  padding: 0.7rem;
-  background: #f1f5f9;
-  color: #334155;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 0.88rem;
-  cursor: pointer;
-  transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  width: 100%; padding: 0.7rem;
+  background: var(--dash-hover, #f1f5f9);
+  color: var(--dash-text, #334155);
+  border: 1.5px solid var(--dash-border, #e2e8f0);
+  border-radius: 10px; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer; transition: background 0.15s;
 }
-.btnDraft:hover:not(:disabled) { background: #e2e8f0; }
+.btnDraft:hover:not(:disabled) { background: var(--dash-border, #e2e8f0); }
 .btnDraft:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .statusInfo {
   font-size: 0.74rem;
-  color: #94a3b8;
+  color: var(--dash-text-muted, #94a3b8);
+  text-align: center; line-height: 1.4;
+}
+
+/* ─── Preview en vivo del catálogo ───────────────────────────────────────── */
+.previewCard {
+  background: var(--dash-card, #ffffff);
+  border: 1px solid var(--dash-border, #e2e8f0);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.previewImgArea {
+  /*
+   * calc: viewport - topBar(48px) - padding(32px) - orgCard(185px) - publishCard(175px)
+   *       - gaps(50px) - previewHeader(45px) - previewLabel(28px) - previewBody(165px)
+   * = 100vh - 728px  → mínimo 160px, máximo 380px
+   */
+  height: clamp(160px, calc(100vh - 728px), 380px);
+  position: relative;
+  overflow: hidden;
+  background: var(--dash-hover, #f1f5f9);
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--dash-hover, #e2e8f0), var(--dash-card, #f8fafc));
+}
+
+.previewFeaturedBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #f59e0b;
+  color: #1e293b;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.previewBody { padding: 0.9rem; }
+
+.previewName {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--dash-text, #1e293b);
+  margin: 0 0 4px;
+  min-height: 1.2em;
+}
+
+.previewCategory {
+  font-size: 0.72rem;
+  color: var(--dash-text-muted, #94a3b8);
+  margin-bottom: 0.5rem;
+}
+
+.previewPriceRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.previewPrice {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #059669;
+}
+
+.previewCompare {
+  text-decoration: line-through;
+  color: var(--dash-text-muted, #94a3b8);
+  font-size: 0.8rem;
+}
+
+.previewDiscount {
+  background: #fef9c3;
+  color: #a16207;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.previewSpecs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 0.65rem;
+}
+
+.previewSpec {
+  background: var(--dash-hover, #f1f5f9);
+  border: 1px solid var(--dash-border, #e2e8f0);
+  border-radius: 4px;
+  font-size: 0.67rem;
+  color: var(--dash-text-muted, #475569);
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+
+.previewActions {
+  display: flex;
+  gap: 5px;
+}
+
+.previewBtnCart {
+  flex: 1;
+  background: #059669;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 0.45rem 0;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-align: center;
-  line-height: 1.4;
+}
+
+.previewBtnWa {
+  background: #25d366;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+.previewEmpty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--dash-text-muted, #94a3b8);
+  font-size: 0.82rem;
+}
+
+.previewEmptyIcon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+
+.previewLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--dash-text-muted, #94a3b8);
+  text-align: center;
+  margin-bottom: 0.6rem;
 }

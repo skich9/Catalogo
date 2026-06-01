@@ -91,7 +91,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </a>
         </div>
 
-        {children}
+        <div className={styles.pageContent}>
+          {children}
+        </div>
       </main>
 
     </div>

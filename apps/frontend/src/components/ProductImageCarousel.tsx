@@ -12,9 +12,10 @@ interface Props {
   items: MediaItem[];
   height?: number;
   autoPlay?: boolean;
+  dark?: boolean;
 }
 
-export function ProductImageCarousel({ items, height = 180, autoPlay = true }: Props) {
+export function ProductImageCarousel({ items, height = 180, autoPlay = true, dark }: Props) {
   const [current, setCurrent] = useState(0);
   const [hovered, setHovered] = useState(false);
 
@@ -34,9 +35,16 @@ export function ProductImageCarousel({ items, height = 180, autoPlay = true }: P
 
   const item = media[current];
 
+  // Colores del placeholder adaptados al dark mode
+  const placeholderBg = dark
+    ? 'linear-gradient(135deg, #1e293b, #263347)'
+    : 'linear-gradient(135deg, #e2e8f0, #f8fafc)';
+
+  const wrapperBg = dark ? '#1a2540' : '#f1f5f9';
+
   return (
     <div
-      style={{ position: 'relative', height, overflow: 'hidden', background: '#f1f5f9' }}
+      style={{ position: 'relative', height, overflow: 'hidden', background: wrapperBg }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -53,7 +61,7 @@ export function ProductImageCarousel({ items, height = 180, autoPlay = true }: P
             <div style={{
               width: '100%', height: '100%',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'linear-gradient(135deg, #e2e8f0, #f8fafc)',
+              background: placeholderBg,
               fontSize: '2.5rem',
             }}>📦</div>
           ) : item.resourceType === 'video' ? (
@@ -86,7 +94,7 @@ export function ProductImageCarousel({ items, height = 180, autoPlay = true }: P
                 width: i === current ? 18 : 7,
                 height: 7,
                 borderRadius: 999,
-                background: i === current ? '#059669' : 'rgba(255,255,255,0.7)',
+                background: i === current ? '#059669' : 'rgba(255,255,255,0.6)',
                 border: 'none',
                 cursor: 'pointer',
                 padding: 0,

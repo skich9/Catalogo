@@ -147,13 +147,69 @@
 .main {
   flex: 1;
   background: var(--dash-bg, #f1f5f9);
-  padding: 2rem;
   overflow-y: auto;
   color: var(--dash-text, #1e293b);
   transition: background 0.25s, color 0.25s;
+  display: flex;
+  flex-direction: column;
 }
 
 .mainDark {
   background: #0f172a !important;
   color: #f1f5f9 !important;
+}
+
+/* ─── Top bar — "Ver catálogo" persistente ────────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 2rem;
+  background: var(--dash-card, #ffffff);
+  border-bottom: 1px solid var(--dash-border, #e2e8f0);
+  flex-shrink: 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.topBarTitle {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--dash-text-muted, #94a3b8);
+  margin: 0;
+}
+
+.topBarCatalogBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(5,150,105,0.28);
+  flex-shrink: 0;
+}
+
+.topBarCatalogBtn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  color: white;
+}
+
+.topBarSlug {
+  font-weight: 400;
+  opacity: 0.72;
+  font-size: 0.73rem;
+}
+
+/* Las páginas hijas reciben su propio padding */
+.pageContent {
+  padding: 2rem;
+  flex: 1;
 }

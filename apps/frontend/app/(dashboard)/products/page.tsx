@@ -19,6 +19,7 @@ export default function ProductsPage() {
     search, setSearch,
     statusFilter, setStatusFilter,
     toggleStatus, deleteProduct, deleting,
+    dark,
   } = useProducts();
 
   return (
@@ -104,7 +105,7 @@ export default function ProductsPage() {
                   >
                     {/* Carrusel de imágenes */}
                     <div className={styles.cardMedia}>
-                      <ProductImageCarousel items={sorted} height={180} />
+                      <ProductImageCarousel items={sorted} height={180} dark={dark} />
                       <div className={styles.badges}>
                         <span className={`${styles.badgeStatus} ${
                           product.status === 'ACTIVE'   ? styles.badgeActive :

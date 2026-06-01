@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import api from '@/lib/api';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 export interface Product {
   id: string;
@@ -19,6 +20,7 @@ export interface Product {
 }
 
 export function useProducts() {
+  const { dark } = useDarkMode('dashboard-dark-mode');
   const [products, setProducts]   = useState<Product[]>([]);
   const [loading, setLoading]     = useState(true);
   const [search, setSearch]       = useState('');
@@ -69,5 +71,6 @@ export function useProducts() {
     statusFilter, setStatusFilter,
     toggleStatus, deleteProduct, deleting,
     refetch: fetchProducts,
+    dark,
   };
 }

@@ -24,19 +24,6 @@ export default function DashboardPage() {
           <h2 className={styles.greeting}>Hola, {user.firstName} 👋</h2>
           <p className={styles.tenantName}>{user.tenant.name}</p>
         </div>
-        <a
-          href={`/catalog/${user.tenant.slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.catalogBtn}
-        >
-          <span className={styles.catalogBtnIcon}>🛍️</span>
-          <div>
-            <span className={styles.catalogBtnLabel}>Ver mi catálogo</span>
-            <span className={styles.catalogBtnSub}>/{user.tenant.slug}</span>
-          </div>
-          <span className={styles.catalogBtnArrow}>→</span>
-        </a>
       </div>
 
       {/* Banner del plan */}

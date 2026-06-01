@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
+import { useDarkMode } from '@/hooks/useDarkMode';
+
+export const CURRENCIES = ['BOB', 'USD', 'ARS', 'PEN', 'CLP'];
 import type { MediaItem } from '@/components/MediaUploader';
 
 export interface Spec { key: string; value: string; }
@@ -36,6 +39,7 @@ export function useNewProduct() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [saving, setSaving]   = useState(false);
   const [error, setError]     = useState('');
+  const { dark } = useDarkMode('dashboard-dark-mode');
 
   useEffect(() => {
     api.get('/categories').then((r) => setCategories(r.data || [])).catch(() => {});
@@ -97,10 +101,17 @@ export function useNewProduct() {
     }
   };
 
+  const discountPct = form.comparePrice && Number(form.comparePrice) > Number(form.price)
+    ? Math.round((1 - Number(form.price) / Number(form.comparePrice)) * 100)
+    : 0;
+
+  const selectedCategory = categories.find((c) => c.id === form.categoryId);
+
   return {
     form, setField, media, setMedia,
     categories, saving, error,
     addSpec, setSpec, removeSpec,
     handleSave,
+    dark, discountPct, selectedCategory,
   };
 }
