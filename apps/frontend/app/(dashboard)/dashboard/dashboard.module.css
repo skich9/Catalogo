@@ -1,8 +1,9 @@
+/* ─── Header ──────────────────────────────────────────────────────────────── */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
@@ -11,15 +12,141 @@
   font-weight: 800;
   color: var(--dash-text, #1e293b);
   font-size: 1.6rem;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.1rem;
 }
 
 .tenantName {
   color: var(--dash-text-muted, #94a3b8);
   margin-bottom: 0;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
+/* ─── Botón Ver Catálogo ─────────────────────────────────────────────────── */
+.catalogBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 4px 16px rgba(5,150,105,0.3);
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+  flex-shrink: 0;
+}
+
+.catalogBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(5,150,105,0.4);
+  color: white;
+  opacity: 0.95;
+}
+
+.catalogBtnIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.catalogBtnLabel {
+  display: block;
+  font-weight: 700;
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.catalogBtnSub {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.75;
+  font-weight: 400;
+}
+
+.catalogBtnArrow {
+  font-size: 1.1rem;
+  margin-left: 0.25rem;
+  transition: transform 0.15s;
+}
+
+.catalogBtn:hover .catalogBtnArrow {
+  transform: translateX(4px);
+}
+
+/* ─── Banner del plan ─────────────────────────────────────────────────────── */
+.planBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #ecfdf5, #d1fae5);
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 0.9rem 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+[data-theme="dark"] .planBanner {
+  background: linear-gradient(90deg, rgba(16,185,129,0.08), rgba(5,150,105,0.12));
+  border-color: rgba(16,185,129,0.2);
+}
+
+.planBannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.planIcon { font-size: 1.4rem; }
+
+.planText {
+  color: #047857;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+[data-theme="dark"] .planText { color: #10b981; }
+
+.planSub {
+  color: #059669;
+  font-size: 0.76rem;
+  margin: 2px 0 0;
+}
+
+[data-theme="dark"] .planSub { color: #6ee7b7; }
+
+.planStatusBadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.planActive  { background: #059669; color: white; }
+.planTrial   { background: #f59e0b; color: #1e293b; }
+.planWarning { background: #ef4444; color: white; }
+
+.planBtn {
+  background: #059669;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.planBtn:hover { background: #047857; color: white; }
+
+/* ─── Stat cards ─────────────────────────────────────────────────────────── */
 .statCard {
   background: var(--dash-card, #ffffff);
   border-radius: 12px;
@@ -53,11 +180,12 @@
   margin: -1.25rem 0 -1.25rem -1.25rem;
 }
 
-.statIcon     { font-size: 2rem; flex-shrink: 0; }
-.statLabel    { color: var(--dash-text-muted, #94a3b8); font-size: 0.82rem; margin-bottom: 0.1rem; }
-.statValue    { font-weight: 800; font-size: 1.8rem; color: var(--dash-text, #1e293b); line-height: 1; margin-bottom: 0; }
+.statIcon  { font-size: 2rem; flex-shrink: 0; }
+.statLabel { color: var(--dash-text-muted, #94a3b8); font-size: 0.82rem; margin-bottom: 0.1rem; }
+.statValue { font-weight: 800; font-size: 1.8rem; color: var(--dash-text, #1e293b); line-height: 1; margin-bottom: 0; }
 
-.actionsSection { margin-top: 1.75rem; }
+/* ─── Acciones rápidas ────────────────────────────────────────────────────── */
+.actionsSection { margin-top: 1.5rem; }
 
 .actionsCard {
   background: var(--dash-card, #ffffff);
@@ -89,18 +217,3 @@
   color: var(--dash-text, #334155) !important;
   border: 1px solid var(--dash-border, #e2e8f0) !important;
 }
-
-.planBanner {
-  margin-top: 1.25rem;
-  background: linear-gradient(90deg, #ecfdf5, #d1fae5);
-  border: 1px solid #a7f3d0;
-  border-radius: 10px;
-  padding: 0.85rem 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.planText    { color: #047857; font-size: 0.9rem; margin: 0; }

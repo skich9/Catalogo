@@ -2,20 +2,11 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './orders.module.css';
-import { useOrders } from './useOrders';
-
-const DAY_OPTIONS = [7, 14, 30, 90];
-
-const STATUS_MAP: Record<string, { label: string; cls: string }> = {
-  PENDING:   { label: 'Pendiente',  cls: styles.statusPending   },
-  CONFIRMED: { label: 'Confirmado', cls: styles.statusConfirmed },
-  PAID:      { label: 'Pagado',     cls: styles.statusPaid      },
-  SHIPPED:   { label: 'Enviado',    cls: styles.statusShipped   },
-  COMPLETED: { label: 'Completado', cls: styles.statusPaid      },
-  CANCELED:  { label: 'Cancelado',  cls: styles.statusCanceled  },
-};
-
-const MEDAL = ['🥇', '🥈', '🥉', '4°', '5°'];
+import {
+  useOrders,
+  DAY_OPTIONS, MEDAL, STATUS_MAP,
+  SUMMARY_CARDS, STATUS_FILTER_OPTIONS,
+} from './useOrders';
 
 export default function OrdersPage() {
   const {
@@ -83,13 +74,7 @@ export default function OrdersPage() {
 
                 {/* Summary cards */}
                 <div className={styles.summaryGrid}>
-                  {[
-                    { icon: '💬', label: 'Clicks WhatsApp', value: summary.waClicks, color: '#25d366' },
-                    { icon: '📦', label: 'Clicks totales', value: summary.totalClicks, color: '#059669' },
-                    { icon: '🛒', label: 'Pedidos totales', value: summary.totalOrders, color: '#0d6efd' },
-                    { icon: '⏳', label: 'Pedidos pendientes', value: summary.pendingOrders, color: '#f59e0b' },
-                    { icon: '✅', label: 'Productos activos', value: summary.activeProducts, color: '#10b981' },
-                  ].map((s, i) => (
+                  {SUMMARY_CARDS.map((s, i) => (
                     <motion.div
                       key={i}
                       className={styles.summaryCard}
@@ -98,7 +83,7 @@ export default function OrdersPage() {
                       transition={{ delay: i * 0.06 }}
                     >
                       <span className={styles.summaryIcon}>{s.icon}</span>
-                      <div className={styles.summaryValue} style={{ color: s.color }}>{s.value}</div>
+                      <div className={styles.summaryValue} style={{ color: s.color }}>{summary[s.key]}</div>
                       <div className={styles.summaryLabel}>{s.label}</div>
                     </motion.div>
                   ))}
@@ -208,12 +193,7 @@ export default function OrdersPage() {
               <>
                 {/* Filtro estado */}
                 <div className="d-flex gap-2 mb-3 flex-wrap">
-                  {[
-                    { v: '', l: 'Todos' },
-                    { v: 'PENDING', l: '⏳ Pendientes' },
-                    { v: 'PAID', l: '✅ Pagados' },
-                    { v: 'CANCELED', l: '❌ Cancelados' },
-                  ].map((opt) => (
+                  {STATUS_FILTER_OPTIONS.map((opt) => (
                     <button
                       key={opt.v}
                       className="btn btn-sm"
@@ -249,7 +229,7 @@ export default function OrdersPage() {
                       <span>Fecha</span>
                     </div>
                     {orders.map((order, i) => {
-                      const s = STATUS_MAP[order.status] || { label: order.status, cls: '' };
+                      const s = STATUS_MAP[order.status] || { label: order.status, cssKey: '' };
                       return (
                         <motion.div
                           key={order.id}
@@ -269,7 +249,7 @@ export default function OrdersPage() {
                             {order.currency} {Number(order.total).toFixed(2)}
                           </span>
                           <span>
-                            <span className={`${styles.statusBadge} ${s.cls}`}>{s.label}</span>
+                            <span className={`${styles.statusBadge} ${s.cssKey ? styles[s.cssKey] : ''}`}>{s.label}</span>
                             {order.payment?.proofUrl && (
                               <small style={{ display: 'block', color: '#94a3b8', marginTop: 2 }}>
                                 📎 Comprobante subido

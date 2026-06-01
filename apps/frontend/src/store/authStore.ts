@@ -14,7 +14,7 @@ interface User {
     slug: string;
     logoUrl?: string;
     cartMode: 'WHATSAPP' | 'QR_PAYMENT';
-    subscription?: { plan: string; status: string };
+    subscription?: { plan: string; status: string; maxProducts: number; maxEmployees: number };
   };
 }
 

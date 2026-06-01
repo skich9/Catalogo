@@ -30,13 +30,43 @@ export interface RankItem {
 
 export type OrderTab = 'ranking' | 'orders';
 
+// Configuración y mapeos — aquí, no en el JSX
+export const DAY_OPTIONS = [7, 14, 30, 90];
+
+export const MEDAL = ['🥇', '🥈', '🥉', '4°', '5°'];
+
+export interface StatusConfig { label: string; cssKey: string }
+export const STATUS_MAP: Record<string, StatusConfig> = {
+  PENDING:   { label: 'Pendiente',  cssKey: 'statusPending'   },
+  CONFIRMED: { label: 'Confirmado', cssKey: 'statusConfirmed' },
+  PAID:      { label: 'Pagado',     cssKey: 'statusPaid'      },
+  SHIPPED:   { label: 'Enviado',    cssKey: 'statusShipped'   },
+  COMPLETED: { label: 'Completado', cssKey: 'statusPaid'      },
+  CANCELED:  { label: 'Cancelado',  cssKey: 'statusCanceled'  },
+};
+
+export const SUMMARY_CARDS = [
+  { icon: '💬', label: 'Clicks WhatsApp',  key: 'waClicks',       color: '#25d366' },
+  { icon: '📦', label: 'Clicks totales',   key: 'totalClicks',    color: '#059669' },
+  { icon: '🛒', label: 'Pedidos totales',  key: 'totalOrders',    color: '#0d6efd' },
+  { icon: '⏳', label: 'Pendientes',        key: 'pendingOrders',  color: '#f59e0b' },
+  { icon: '✅', label: 'Productos activos', key: 'activeProducts', color: '#10b981' },
+] as const;
+
+export const STATUS_FILTER_OPTIONS = [
+  { v: '',         l: 'Todos'         },
+  { v: 'PENDING',  l: '⏳ Pendientes' },
+  { v: 'PAID',     l: '✅ Pagados'    },
+  { v: 'CANCELED', l: '❌ Cancelados' },
+];
+
 export function useOrders() {
-  const [tab, setTab]           = useState<OrderTab>('ranking');
-  const [orders, setOrders]     = useState<Order[]>([]);
-  const [ranking, setRanking]   = useState<RankItem[]>([]);
-  const [summary, setSummary]   = useState({ totalOrders: 0, pendingOrders: 0, totalClicks: 0, waClicks: 0, activeProducts: 0 });
-  const [days, setDays]         = useState(30);
-  const [loading, setLoading]   = useState(true);
+  const [tab, setTab]                   = useState<OrderTab>('ranking');
+  const [orders, setOrders]             = useState<Order[]>([]);
+  const [ranking, setRanking]           = useState<RankItem[]>([]);
+  const [summary, setSummary]           = useState({ totalOrders: 0, pendingOrders: 0, totalClicks: 0, waClicks: 0, activeProducts: 0 });
+  const [days, setDays]                 = useState(30);
+  const [loading, setLoading]           = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
 
   useEffect(() => {
@@ -52,9 +82,7 @@ export function useOrders() {
     ? orders.filter((o) => o.status === statusFilter)
     : orders;
 
-  // Máximo de clicks para calcular la barra de porcentaje
-  const maxClicks = ranking.length > 0 ? Math.max(...ranking.map((r) => r.clicks), 1) : 1;
-
+  const maxClicks     = ranking.length > 0 ? Math.max(...ranking.map((r) => r.clicks), 1) : 1;
   const bestProducts  = ranking.slice(0, 5);
   const worstProducts = [...ranking].reverse().slice(0, 5);
 

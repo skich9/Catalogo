@@ -72,6 +72,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* ─── Contenido principal ─────────────────────────────────────────── */}
       <main className={`${styles.main} ${dark ? styles.mainDark : ''}`}>
+
+        {/* Barra superior — "Ver catálogo" en todas las páginas */}
+        <div className={styles.topBar}>
+          <p className={styles.topBarTitle}>
+            {user.tenant.name}
+          </p>
+          <a
+            href={`/catalog/${user.tenant.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.topBarCatalogBtn}
+          >
+            <span>🛍️</span>
+            <span>Ver catálogo</span>
+            <span className={styles.topBarSlug}>/{user.tenant.slug}</span>
+            <span>↗</span>
+          </a>
+        </div>
+
         {children}
       </main>
 
