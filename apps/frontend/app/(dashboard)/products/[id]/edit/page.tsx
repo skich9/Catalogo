@@ -4,11 +4,8 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './editProduct.module.css';
-import { useEditProduct } from './useEditProduct';
+import { useEditProduct, CURRENCIES } from './useEditProduct';
 import { MediaUploader } from '@/components/MediaUploader';
-import { ProductImageCarousel } from '@/components/ProductImageCarousel';
-
-const CURRENCIES = ['BOB', 'USD', 'ARS', 'PEN', 'CLP'];
 
 export default function EditProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +13,10 @@ export default function EditProductPage() {
     form, setField, media, setMedia,
     categories, loading, saving, error, saved,
     addSpec, setSpec, removeSpec, handleSave,
+    discountPct, selectedCategory,
   } = useEditProduct(id);
+
+  const primaryMedia = media[0];
 
   if (loading) {
     return (
@@ -25,10 +25,6 @@ export default function EditProductPage() {
       </div>
     );
   }
-
-  const discountPct = form.comparePrice && Number(form.comparePrice) > Number(form.price)
-    ? Math.round((1 - Number(form.price) / Number(form.comparePrice)) * 100)
-    : 0;
 
   return (
     <div className={styles.page}>
@@ -40,10 +36,10 @@ export default function EditProductPage() {
       {error && <div className="alert alert-danger py-2 small mb-3">{error}</div>}
 
       <div className={styles.layout}>
-        {/* ─── Columna principal ────────────────────────────────────────── */}
+
+        {/* ─── Columna izquierda: formulario ─────────────────────────── */}
         <div>
 
-          {/* Información básica */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <span className={styles.cardIcon}>📝</span>
@@ -51,27 +47,18 @@ export default function EditProductPage() {
             </div>
             <div className={styles.cardBody}>
               <div className="mb-3">
-                <label className={styles.label}>
-                  Nombre <span className={styles.required}>*</span>
-                </label>
-                <input
-                  className="form-control"
-                  value={form.name}
-                  onChange={(e) => setField('name', e.target.value)}
-                />
+                <label className={styles.label}>Nombre <span className={styles.required}>*</span></label>
+                <input className="form-control" value={form.name}
+                  onChange={(e) => setField('name', e.target.value)} />
               </div>
               <div>
                 <label className={styles.label}>Descripción</label>
-                <textarea
-                  className="form-control" rows={4}
-                  value={form.description}
-                  onChange={(e) => setField('description', e.target.value)}
-                />
+                <textarea className="form-control" rows={4} value={form.description}
+                  onChange={(e) => setField('description', e.target.value)} />
               </div>
             </div>
           </div>
 
-          {/* Precio */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <span className={styles.cardIcon}>💰</span>
@@ -105,32 +92,30 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* Fotos y Videos */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <span className={styles.cardIcon}>🖼️</span>
               <p className={styles.cardTitle}>Fotos y Videos</p>
             </div>
             <div className={styles.cardBody}>
-              <MediaUploader
-                productId={id}
-                items={media}
-                onChange={setMedia}
-                maxItems={8}
-              />
+              <MediaUploader productId={id} items={media} onChange={setMedia} maxItems={8} />
               <p className={styles.hint} style={{ marginTop: '0.5rem' }}>
                 Las fotos se suben automáticamente a Cloudinary. ⭐ = foto principal del catálogo.
               </p>
             </div>
           </div>
 
-          {/* Especificaciones */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <span className={styles.cardIcon}>📋</span>
               <p className={styles.cardTitle}>Especificaciones</p>
             </div>
             <div className={styles.cardBody}>
+              {form.specs.length === 0 && (
+                <p className="small mb-3" style={{ color: 'var(--dash-text-muted, #94a3b8)' }}>
+                  Agregá características (Color, Talla, Material, etc.)
+                </p>
+              )}
               {form.specs.map((spec, i) => (
                 <motion.div key={i} className={styles.specRow}
                   initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
@@ -145,7 +130,6 @@ export default function EditProductPage() {
             </div>
           </div>
 
-          {/* Contacto */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <span className={styles.cardIcon}>📱</span>
@@ -173,103 +157,149 @@ export default function EditProductPage() {
 
         </div>
 
-        {/* ─── Columna lateral ──────────────────────────────────────────── */}
-        <div>
+        {/* ─── Columna derecha: 1° Preview · 2° Organización + Guardar */}
+        <div className={styles.rightColumn}>
 
-          {/* Acciones */}
+          {/* 1° Vista previa en vivo */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <span className={styles.cardIcon}>💾</span>
-              <p className={styles.cardTitle}>Guardar cambios</p>
+              <span className={styles.cardIcon}>👁️</span>
+              <p className={styles.cardTitle}>Vista previa en el catálogo</p>
             </div>
-            <div className={styles.cardBody}>
-              <AnimatePresence>
-                {saved && (
-                  <motion.div className={styles.savedBanner}
-                    initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }} style={{ marginBottom: '0.75rem' }}>
-                    ✅ Cambios guardados
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <div className={styles.actionBar}>
-                <button className={styles.btnSave} onClick={() => handleSave(false)} disabled={saving}>
-                  {saving ? <><span className="spinner-border spinner-border-sm" /> Guardando...</> : '💾 Guardar cambios'}
-                </button>
-                {form.status !== 'ACTIVE' && (
-                  <button className={styles.btnSecondary} onClick={() => handleSave(true)} disabled={saving}>
-                    🚀 Guardar y publicar
-                  </button>
-                )}
-                <Link href="/products" className={styles.btnSecondary} style={{ textDecoration: 'none' }}>
-                  ← Volver sin guardar
-                </Link>
-              </div>
-            </div>
-          </div>
+            <div className={styles.cardBody} style={{ padding: '0.75rem' }}>
+              <p className={styles.previewLabel}>Así verán tu producto los clientes</p>
 
-          {/* Organización */}
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <span className={styles.cardIcon}>🗂️</span>
-              <p className={styles.cardTitle}>Organización</p>
-            </div>
-            <div className={styles.cardBody}>
-              <div className="mb-3">
-                <label className={styles.label}>Categoría</label>
-                <select className="form-select form-select-sm" value={form.categoryId}
-                  onChange={(e) => setField('categoryId', e.target.value)}>
-                  <option value="">Sin categoría</option>
-                  {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-                </select>
-              </div>
-              <div className="mb-3">
-                <label className={styles.label}>Estado</label>
-                <select className="form-select form-select-sm" value={form.status}
-                  onChange={(e) => setField('status', e.target.value as any)}>
-                  <option value="DRAFT">📝 Borrador</option>
-                  <option value="ACTIVE">✅ Activo (visible)</option>
-                  <option value="ARCHIVED">📦 Archivado</option>
-                </select>
-              </div>
-              <label className={styles.label}>Destacado</label>
-              <div className={`${styles.featuredToggle} ${form.isFeatured ? styles.featuredToggleOn : ''}`}
-                onClick={() => setField('isFeatured', !form.isFeatured)}>
-                <div className={`${styles.toggleTrack} ${form.isFeatured ? styles.toggleTrackOn : ''}`}>
-                  <div className={`${styles.toggleThumb} ${form.isFeatured ? styles.toggleThumbOn : ''}`} />
+              <div className={styles.previewCard}>
+                <div className={styles.previewImgArea}>
+                  {form.isFeatured && (
+                    <span className={styles.previewFeaturedBadge}>⭐ Destacado</span>
+                  )}
+                  {primaryMedia ? (
+                    primaryMedia.resourceType === 'video' ? (
+                      <video src={primaryMedia.url} className={styles.previewVideo} autoPlay muted loop playsInline />
+                    ) : (
+                      <img src={primaryMedia.url} alt="" className={styles.previewImg} />
+                    )
+                  ) : (
+                    <div className={styles.previewPlaceholder}>📦</div>
+                  )}
                 </div>
-                <div>
-                  <p style={{ margin: 0, fontWeight: 700, fontSize: '0.85rem', color: form.isFeatured ? '#059669' : '#334155' }}>
-                    {form.isFeatured ? '⭐ Destacado' : 'Normal'}
+
+                <div className={styles.previewBody}>
+                  {selectedCategory && (
+                    <p className={styles.previewCategory}>{selectedCategory.name}</p>
+                  )}
+                  <p className={styles.previewName}>
+                    {form.name || <span style={{ opacity: 0.4 }}>Nombre del producto...</span>}
                   </p>
-                  <p style={{ margin: 0, fontSize: '0.73rem', color: '#94a3b8' }}>Aparece primero en el catálogo</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Preview */}
-          {media.length > 0 && (
-            <div className={styles.card}>
-              <div className={styles.cardHeader}>
-                <span className={styles.cardIcon}>👁️</span>
-                <p className={styles.cardTitle}>Vista previa</p>
-              </div>
-              <div className={styles.cardBody} style={{ padding: '0.75rem' }}>
-                <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, overflow: 'hidden' }}>
-                  <ProductImageCarousel items={media} height={160} />
-                  <div style={{ padding: '0.6rem 0.8rem' }}>
-                    <p style={{ fontWeight: 700, fontSize: '0.85rem', color: '#1e293b', margin: '0 0 4px' }}>
-                      {form.name}
-                    </p>
-                    <span style={{ fontWeight: 800, color: '#059669', fontSize: '0.9rem' }}>
-                      {form.currency} {form.price}
+                  <div className={styles.previewPriceRow}>
+                    <span className={styles.previewPrice}>
+                      {form.currency} {form.price ? Number(form.price).toFixed(2) : '0.00'}
                     </span>
+                    {form.comparePrice && Number(form.comparePrice) > 0 && (
+                      <span className={styles.previewCompare}>{Number(form.comparePrice).toFixed(2)}</span>
+                    )}
+                    {discountPct > 0 && (
+                      <span className={styles.previewDiscount}>-{discountPct}%</span>
+                    )}
+                  </div>
+                  {form.specs.filter((s) => s.key && s.value).length > 0 && (
+                    <div className={styles.previewSpecs}>
+                      {form.specs.filter((s) => s.key && s.value).slice(0, 3).map((s, i) => (
+                        <span key={i} className={styles.previewSpec}>
+                          <span style={{ opacity: 0.6 }}>{s.key}:</span> {s.value}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className={styles.previewActions}>
+                    <div className={styles.previewBtnCart}>🛒 Agregar</div>
+                    {form.whatsappNumber && <div className={styles.previewBtnWa}>💬</div>}
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+
+          {/* 2° Organización + Guardar — lado a lado */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+
+            {/* Organización */}
+            <div className={styles.card} style={{ marginBottom: 0 }}>
+              <div className={styles.cardHeader}>
+                <span className={styles.cardIcon}>🗂️</span>
+                <p className={styles.cardTitle}>Organización</p>
+              </div>
+              <div className={styles.cardBody}>
+                <div className="mb-3">
+                  <label className={styles.label}>Categoría</label>
+                  <select className="form-select form-select-sm" value={form.categoryId}
+                    onChange={(e) => setField('categoryId', e.target.value)}>
+                    <option value="">Sin categoría</option>
+                    {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className={styles.label}>Estado</label>
+                  <select className="form-select form-select-sm" value={form.status}
+                    onChange={(e) => setField('status', e.target.value as any)}>
+                    <option value="DRAFT">📝 Borrador</option>
+                    <option value="ACTIVE">✅ Activo</option>
+                    <option value="ARCHIVED">📦 Archivado</option>
+                  </select>
+                </div>
+                <label className={styles.label}>Destacado</label>
+                <div
+                  className={`${styles.featuredToggle} ${form.isFeatured ? styles.featuredToggleOn : ''}`}
+                  onClick={() => setField('isFeatured', !form.isFeatured)}
+                >
+                  <div className={`${styles.toggleTrack} ${form.isFeatured ? styles.toggleTrackOn : ''}`}>
+                    <div className={`${styles.toggleThumb} ${form.isFeatured ? styles.toggleThumbOn : ''}`} />
+                  </div>
+                  <div>
+                    <p style={{ margin: 0, fontWeight: 700, fontSize: '0.82rem', color: form.isFeatured ? '#059669' : 'var(--dash-text, #334155)' }}>
+                      {form.isFeatured ? '⭐ Destacado' : 'Normal'}
+                    </p>
+                    <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--dash-text-muted, #94a3b8)' }}>
+                      Aparece primero
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Guardar */}
+            <div className={styles.card} style={{ marginBottom: 0 }}>
+              <div className={styles.cardHeader}>
+                <span className={styles.cardIcon}>💾</span>
+                <p className={styles.cardTitle}>Guardar</p>
+              </div>
+              <div className={styles.cardBody}>
+                <AnimatePresence>
+                  {saved && (
+                    <motion.div className={styles.savedBanner}
+                      initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+                      ✅ Guardado
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <div className={styles.actionBar}>
+                  <button className={styles.btnSave} onClick={() => handleSave(false)} disabled={saving}>
+                    {saving ? <><span className="spinner-border spinner-border-sm" /> Guardando...</> : '💾 Guardar'}
+                  </button>
+                  {form.status !== 'ACTIVE' && (
+                    <button className={styles.btnSecondary} onClick={() => handleSave(true)} disabled={saving}>
+                      🚀 Publicar
+                    </button>
+                  )}
+                  <Link href="/products" className={styles.btnSecondary}>
+                    ← Volver
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+          </div>
 
         </div>
       </div>

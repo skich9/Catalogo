@@ -78,12 +78,13 @@ export default function OrdersPage() {
                     <motion.div
                       key={i}
                       className={styles.summaryCard}
+                      style={{ '--accent-color': s.color } as React.CSSProperties}
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.06 }}
                     >
                       <span className={styles.summaryIcon}>{s.icon}</span>
-                      <div className={styles.summaryValue} style={{ color: s.color }}>{summary[s.key]}</div>
+                      <div className={styles.summaryValue}>{summary[s.key]}</div>
                       <div className={styles.summaryLabel}>{s.label}</div>
                     </motion.div>
                   ))}
@@ -92,7 +93,7 @@ export default function OrdersPage() {
                 {ranking.length === 0 ? (
                   <div className={styles.noDataCard}>
                     <span className={styles.noDataIcon}>📊</span>
-                    <p style={{ fontWeight: 700, color: '#334155' }}>Sin datos de interés aún</p>
+                    <p style={{ fontWeight: 700, color: 'var(--dash-text, #334155)' }}>Sin datos de interés aún</p>
                     <p style={{ fontSize: '0.85rem' }}>
                       Los datos se registran cuando los clientes hacen click en los botones
                       de WhatsApp o agregan productos al carrito en tu catálogo público.

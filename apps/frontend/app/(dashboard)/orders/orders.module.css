@@ -7,13 +7,13 @@
   gap: 1rem;
 }
 
-.title { font-weight: 800; color: #1e293b; font-size: 1.4rem; margin: 0; }
+.title { font-weight: 800; color: var(--dash-text, #1e293b); font-size: 1.4rem; margin: 0; }
 
 /* ─── Tabs ────────────────────────────────────────────────────────────────── */
 .tabs {
   display: flex;
   gap: 0.25rem;
-  background: #e2e8f0;
+  background: var(--dash-border, #e2e8f0);
   border-radius: 10px;
   padding: 4px;
   margin-bottom: 1.5rem;
@@ -27,32 +27,69 @@
   border-radius: 7px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--dash-text-muted, #64748b);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.tab:hover { color: #1e293b; }
-.tabActive  { background: #ffffff; color: #059669; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.tab:hover { color: var(--dash-text, #1e293b); }
+.tabActive  { background: var(--dash-card, #ffffff); color: #059669; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
 
 /* ─── Summary cards ───────────────────────────────────────────────────────── */
 .summaryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   gap: 0.9rem;
   margin-bottom: 1.75rem;
 }
 
 .summaryCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-card, #ffffff);
+  border: 1px solid var(--dash-border, #e2e8f0);
   border-radius: 12px;
   padding: 1rem 1.1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.18s, box-shadow 0.18s;
 }
 
-.summaryValue { font-weight: 800; color: #1e293b; font-size: 1.7rem; line-height: 1; margin-bottom: 4px; }
-.summaryLabel { font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-.summaryIcon  { font-size: 1.4rem; margin-bottom: 0.4rem; display: block; }
+.summaryCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Barra de acento arriba de cada card */
+.summaryCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-color, #10b981);
+  border-radius: 12px 12px 0 0;
+}
+
+.summaryValue {
+  font-weight: 800;
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 3px;
+  color: var(--accent-color, #059669);
+}
+
+.summaryLabel {
+  font-size: 0.72rem;
+  color: var(--dash-text-muted, #94a3b8);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+.summaryIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
 
 /* ─── Filtro días ─────────────────────────────────────────────────────────── */
 .dayFilter {
@@ -62,22 +99,23 @@
   flex-wrap: wrap;
   align-items: center;
 }
-.dayLabel { font-size: 0.8rem; color: #64748b; font-weight: 600; margin-right: 0.2rem; }
+.dayLabel { font-size: 0.8rem; color: var(--dash-text-muted, #64748b); font-weight: 600; margin-right: 0.2rem; }
+
 .dayBtn {
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  border: 1.5px solid #e2e8f0;
-  background: white;
-  color: #64748b;
+  border: 1.5px solid var(--dash-border, #e2e8f0);
+  background: var(--dash-card, white);
+  color: var(--dash-text-muted, #64748b);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
 .dayBtn:hover { border-color: #059669; color: #059669; }
-.dayBtnActive { border-color: #059669; background: #ecfdf5; color: #059669; }
+.dayBtnActive { border-color: #059669; background: rgba(5,150,105,0.1); color: #059669; }
 
-/* ─── Sección de ranking ──────────────────────────────────────────────────── */
+/* ─── Ranking ─────────────────────────────────────────────────────────────── */
 .rankingSection {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -87,97 +125,77 @@
 @media (max-width: 700px) { .rankingSection { grid-template-columns: 1fr; } }
 
 .rankCard {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-card, #ffffff);
+  border: 1px solid var(--dash-border, #e2e8f0);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
-.rankCardHeader {
-  padding: 0.85rem 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.rankHeaderBest { background: linear-gradient(90deg, #064e3b, #059669); }
+.rankCardHeader { padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+.rankHeaderBest  { background: linear-gradient(90deg, #064e3b, #059669); }
 .rankHeaderWorst { background: linear-gradient(90deg, #1e293b, #334155); }
-
 .rankHeaderTitle { color: #f1f5f9; font-weight: 700; font-size: 0.9rem; margin: 0; }
 
-.rankList { padding: 0.5rem; }
+.rankList { padding: 0.4rem; }
 
 .rankItem {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.6rem 0.5rem;
+  padding: 0.6rem 0.6rem;
   border-radius: 8px;
   transition: background 0.12s;
+  border-bottom: 1px solid var(--dash-border, #f1f5f9);
 }
-.rankItem:hover { background: #f8fafc; }
+.rankItem:last-child { border-bottom: none; }
+.rankItem:hover { background: var(--dash-hover, #f8fafc); }
 
 .rankPos {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.72rem;
-  flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.72rem; flex-shrink: 0;
 }
-.rankPosBest  { background: #d1fae5; color: #059669; }
-.rankPosWorst { background: #f1f5f9; color: #94a3b8; }
+.rankPosBest  { background: rgba(5,150,105,0.15); color: #059669; }
+.rankPosWorst { background: var(--dash-hover, #f1f5f9); color: var(--dash-text-muted, #94a3b8); }
 
 .rankImg {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: #f1f5f9;
+  width: 42px; height: 42px; border-radius: 8px;
+  object-fit: cover; flex-shrink: 0;
+  background: var(--dash-hover, #f1f5f9);
+  border: 1px solid var(--dash-border, #e2e8f0);
 }
 
 .rankImgPlaceholder {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  flex-shrink: 0;
+  width: 42px; height: 42px; border-radius: 8px;
+  background: var(--dash-hover, #f1f5f9);
+  border: 1px solid var(--dash-border, #e2e8f0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
 }
 
 .rankInfo { flex: 1; min-width: 0; }
 
 .rankName {
-  font-weight: 600;
-  font-size: 0.82rem;
-  color: #1e293b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 3px;
+  font-weight: 700; font-size: 0.83rem;
+  color: var(--dash-text, #1e293b);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 4px;
 }
 
-.rankBarWrap { background: #f1f5f9; border-radius: 999px; height: 5px; margin-bottom: 2px; }
-.rankBarFill { height: 5px; border-radius: 999px; transition: width 0.6s ease; }
+.rankBarWrap { background: var(--dash-border, #e2e8f0); border-radius: 999px; height: 5px; margin-bottom: 3px; overflow: hidden; }
+.rankBarFill { height: 5px; border-radius: 999px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
 
-.rankClicks  { font-size: 0.7rem; color: #94a3b8; }
+.rankClicks    { font-size: 0.7rem; color: var(--dash-text-muted, #94a3b8); }
 .rankClicksNum { color: #059669; font-weight: 700; }
 
 /* ─── Tabla de pedidos ────────────────────────────────────────────────────── */
 .ordersTable {
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-card, white);
+  border: 1px solid var(--dash-border, #e2e8f0);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
 .tableHeader {
@@ -187,7 +205,6 @@
   align-items: center;
   justify-content: space-between;
 }
-
 .tableTitle { color: #f1f5f9; font-weight: 700; font-size: 0.9rem; margin: 0; }
 
 .orderRow {
@@ -196,53 +213,56 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.8rem 1.25rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--dash-border, #f1f5f9);
   font-size: 0.83rem;
   transition: background 0.12s;
+  color: var(--dash-text, #334155);
 }
 .orderRow:last-child { border-bottom: none; }
-.orderRow:hover { background: #f8fafc; }
+.orderRow:hover { background: var(--dash-hover, #f8fafc); }
 
 .orderHeaderRow {
-  background: #f8fafc;
+  background: var(--dash-hover, #f8fafc);
   font-weight: 700;
   font-size: 0.73rem;
-  color: #94a3b8;
+  color: var(--dash-text-muted, #94a3b8);
   text-transform: uppercase;
   letter-spacing: 0.4px;
 }
 
-.orderNum { font-weight: 700; color: #059669; font-family: monospace; }
-.orderCustomer { color: #334155; }
-.orderAmount { font-weight: 700; color: #1e293b; }
+.orderNum      { font-weight: 700; color: #059669; font-family: monospace; }
+.orderCustomer { color: var(--dash-text, #334155); }
+.orderAmount   { font-weight: 700; color: var(--dash-text, #1e293b); }
 
+/* ─── Status badges ───────────────────────────────────────────────────────── */
 .statusBadge {
   display: inline-block;
   font-size: 0.68rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 3px 9px;
   border-radius: 999px;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
-.statusPending   { background: #fef9c3; color: #a16207; }
-.statusConfirmed { background: #dbeafe; color: #1d4ed8; }
-.statusPaid      { background: #d1fae5; color: #059669; }
-.statusCanceled  { background: #fee2e2; color: #dc2626; }
-.statusShipped   { background: #e0e7ff; color: #4338ca; }
+.statusPending   { background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.25); }
+.statusConfirmed { background: rgba(59,130,246,0.12); color: #3b82f6; border: 1px solid rgba(59,130,246,0.25); }
+.statusPaid      { background: rgba(5,150,105,0.12);  color: #059669; border: 1px solid rgba(5,150,105,0.25); }
+.statusCanceled  { background: rgba(239,68,68,0.12);  color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+.statusShipped   { background: rgba(99,102,241,0.12); color: #6366f1; border: 1px solid rgba(99,102,241,0.25); }
 
+/* ─── Empty / No data ─────────────────────────────────────────────────────── */
 .emptyOrders {
   text-align: center;
   padding: 3rem;
-  color: #94a3b8;
+  color: var(--dash-text-muted, #94a3b8);
 }
 
 .noDataCard {
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: var(--dash-card, white);
+  border: 2px dashed var(--dash-border, #e2e8f0);
   border-radius: 14px;
   padding: 3rem;
   text-align: center;
-  color: #94a3b8;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  color: var(--dash-text-muted, #94a3b8);
 }
 .noDataIcon { font-size: 3rem; display: block; margin-bottom: 0.75rem; }
